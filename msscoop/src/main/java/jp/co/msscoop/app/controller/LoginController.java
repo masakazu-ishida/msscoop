@@ -75,10 +75,14 @@ public class LoginController {
 	
 	
 	/**
+	 * ■概要
 	 * ログイン画面を表示する
 	 * 
 	 * ■メソッドレベルで宣言するアノテーション
 	 * @GetMapping("")
+	 * 
+	 * ■ロジック詳細
+	 * ・"/common/login"を返す
 	 * 
 	 * @return ログイン画面を表すパス"/common/login"を返す
 	 */
