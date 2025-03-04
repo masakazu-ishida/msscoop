@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.msscoop.app.dao.ReserveDAO">
+	
+	
+	
+	<!-- チェックイン日のe_reserveの件数＋１をreserve_idとする。tocharで変換すると
+	何故か先頭にスペースが入るのでreplaceで消している
+	このメソッドは必ずトランザクションで排他ロックを掛けてから呼び出すこと！　-->
+	<select id="findNewId" resultType="string">
+		SELECT  replace(cast(#{checkIn} as character(10)), '-','')
+	       || replace( to_char(COUNT(reserve_id) + 1, '0000'), ' ','')  as reserve_id 
+	    FROM e_reserve where checkin = #{checkIn}
+
+	</select>
+	
+	
+	<insert id="insert" parameterType="jp.co.msscoop.app.dto.Reserve">
+		INSERT INTO public.e_reserve(
+			reserve_id,
+			user_id, 
+			room_id, 
+			checkIn, 
+			checkOut, 
+			stay_number_of_people, 
+			meal, 
+			amount)
+	VALUES (#{reserveId}, 
+			#{userId}, 
+			#{roomId}, 
+			#{checkIn}, 
+			#{checkOut}, 
+			#{stayNumberOfPeople},
+			#{meal},
+			#{amount});
+	</insert>
+	
+	
+	
+	
+</mapper>

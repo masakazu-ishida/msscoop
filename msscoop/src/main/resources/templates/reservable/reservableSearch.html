@@ -1,0 +1,26 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{/common/head}">
+	</head>
+	<body>
+	    <!-- (2)body内で共通化したい部品をfragment化する -->
+	    <header th:replace="~{/common/header}"></header>
+		
+		<span class="text-danger"
+					             th:if="${errormsg != null}"
+					             th:text="${errormsg}">
+					               authrize error </span>
+		<main>
+			<form th:object="${searchForm}" th:action="@{/reservable/search}" method="post">
+			<table border="0">
+				<tr><td>チェックイン日<input type="date" th:field="*{checkin}"></td>
+					<td>～チェックアウト日<input type="date" th:field="*{checkout}"></td></tr>
+				<tr><td>内風呂<input type="checkbox" th:field="*{inDoorBath}"></td><td></tr>
+				<tr><td>喫煙 <input type="checkbox" th:field="*{smoking}"></td><td></tr>
+				<tr><td><input type="submit" name="execute" value="検索"><td></td></tr>
+			</table>
+			</form>
+		</main>
+		<footer th:replace="~{/common/footer}"></footer>
+	</body>
+</html>

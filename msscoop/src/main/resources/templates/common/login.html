@@ -1,0 +1,43 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <title>五朝温泉旅館美人の湯予約システム</title>
+	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	  
+	  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	</head>
+	<body class="text-center">
+		<br>
+		<h4>ようこそ五朝温泉旅館　美人の湯へ</h4>
+		<br>
+	    <h2>ログイン</h2>
+		<span class="text-danger"
+			             th:if="${errormsg != null}"
+			             th:text="${errormsg}">
+			               authrize error </span>
+	    <form method="post" th:action="@{/login}" th:object="${loginForm}">
+	        <label>ユーザーID</label>
+	        <input type="text" name="username"/></br>
+			<span class="text-danger"
+	             th:if="${#fields.hasErrors('username')}"
+	             th:errors="*{username}">
+	               userId error</span>
+	        </br>
+	        <label>パスワード</label>
+	        <input type="password" name="password"/></br>
+			<span class="text-danger"
+		             th:if="${#fields.hasErrors('password')}"
+		             th:errors="*{password}">
+					password error</span>
+				        <br />
+	        </br>
+	        <button class="btn btn-primary" type="submit">ログイン</button>
+	    </form>
+	    <br />
+	    <a th:href="@{'/signup'}">新規登録はこちら</a>
+	</body>
+</html>

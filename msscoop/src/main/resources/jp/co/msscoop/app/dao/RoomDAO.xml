@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.msscoop.app.dao.RoomDAO">
+	
+	
+	<resultMap id="roomInfo" type="jp.co.msscoop.app.dto.Room">
+		<id property="roomId" column="roomId"/>
+		<result property="roomName" column="roomName"/>
+		<result property="inDoorBathRoom" column="inDoorBathRoom"/>
+		<result property="price" column="price"/>
+		<result property="smoking" column="smoking"/>
+		<result property="roomImage" column="roomImage"/>
+	</resultMap>
+	
+	
+	
+	<select id="findById" resultMap="roomInfo">
+	
+		SELECT 
+			room_id as roomId, 
+			room_name as roomName, 
+			indoor_bathroom as inDoorbathRoom, 
+			price, 
+			smoking, 
+			room_image as roomImage
+	FROM public.r_room where 
+			room_id= #{roomId}
+       </select>
+</mapper>

@@ -1,0 +1,25 @@
+<head th:fragment="head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- (1)共通で読み込むCSS/JS -->
+    <link rel="stylesheet" href="/css/layout.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<body>
+	    <!-- (2)body内で共通化したい部品をfragment化する -->
+	    <header th:fragment="header">
+	        <h1>header</h1>
+	    </header>
+		
+		<main th:fragment="main">
+			<h1>main</h1>
+		</main >
+		
+		<footer th:fragment="header">
+			<h1>main</h1>
+		</footer>
+		
+	</body>
+</html>

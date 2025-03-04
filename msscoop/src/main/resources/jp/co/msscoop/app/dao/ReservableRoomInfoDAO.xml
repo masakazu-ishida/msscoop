@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.msscoop.app.dao.ReservableRoomInfoDAO">
+	
+	
+	<resultMap id="reservableRoomInfo" type="jp.co.msscoop.app.dto.ReservableRoomInfo">
+		<!--複合キーの場合idタグを複数記述-->
+		<id property="roomId" column="roomId"/>
+		<id property="businessday" column="businessday"/>
+		<association property="room" resultMap="roomInfo" />
+	</resultMap>
+	<resultMap id="roomInfo" type="jp.co.msscoop.app.dto.Room">
+		<id property="roomId" column="roomId"/>
+		<result property="roomName" column="roomName"/>
+		<result property="inDoorBathRoom" column="inDoorBathRoom"/>
+		<result property="price" column="price"/>
+		<result property="smoking" column="smoking"/>
+		<result property="roomImage" column="roomImage"/>
+	</resultMap>
+	
+	
+	
+	<select id="search" resultMap="reservableRoomInfo">
+	<![CDATA[ 
+		SELECT 
+			r_room.room_id as roomId,
+			r_room.room_name as roomName,
+			r_room.indoor_bathroom as inDoorBathRoom,
+			r_room.price,
+			r_room.smoking,
+			r_room.room_image as roomImage,
+			reservable_info.businessday
+		FROM 
+			r_room 
+		INNER JOIN 
+		(
+			SELECT 
+				e_reserve.reserve_id,
+				r_reservavle_room_info.room_id,
+				r_reservavle_room_info.businessday
+			FROM public.r_reservavle_room_info
+			LEFT OUTER JOIN public.e_reserve  ON
+				r_reservavle_room_info.room_id = e_reserve.room_id
+			AND r_reservavle_room_info.businessday = e_reserve.checkin
+			WHERE 
+				reserve_id is  NULL
+			) reservable_info
+		ON reservable_info.room_id = r_room.room_id
+		WHERE 
+				reservable_info.businessday >= #{firstCheckIn}
+			AND reservable_info.businessday <= #{finalCheckIn}
+			AND r_room.smoking = #{smoking}
+			AND r_room.indoor_bathroom = #{inDoorBathRoom}
+		ORDER BY businessday, reservable_info.room_id
+     ]]>
+   </select>
+   
+   
+   
+   
+   
+   
+  
+   
+   
+   <select id="findById" resultType="jp.co.msscoop.app.dto.ReservableRoomInfo">
+   		SELECT r_reservavle_room_info.room_id, 
+   			r_reservavle_room_info.businessday
+			FROM r_reservavle_room_info
+		INNER JOIN e_reserve 
+			ON  r_reservavle_room_info.room_id = e_reserve.room_id
+			AND r_reservavle_room_info.businessday = e_reserve.checkin 
+		WHERE 
+			r_reservavle_room_info.room_id = #{roomId} 
+			AND r_reservavle_room_info.businessday = #{businessDay} FOR UPDATE
+   </select>
+   
+   
+   
+   
+</mapper>
