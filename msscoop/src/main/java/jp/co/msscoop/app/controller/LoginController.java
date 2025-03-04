@@ -88,14 +88,28 @@ public class LoginController {
 	}
 	
 	/**
+	 * ■概要
 	 * ログインを実行する
+	 * 
+	 * ■メソッドレベルで宣言するアノテーション
 	 * @PostMapping("")
+	 * 
+	 * ■ロジック詳細
+	 * ・入力エラーが発生した場合ログイン画面に戻る
+	 * ・インジェクションしたUserSharedServiceで認証を行う。戻り値にUserInfoを返す
+	 * ・認証成功
+	 * 　SessionScopeBean.setLoginUserを呼び出し、UserInfoをセット。
+	 * 　"redirect:/reservable/search"を返す
+	 * 
+	 * ・認証失敗時
+	 * 　"bus.error.authorized"をmessage.propertiesから取得し、キーerrormsgでModelにaddAttributeする
+	 * 　"/common/login"を返す
 	 * 
 	 * @param　LoginFormを@Validatedをつけて指定
 	 * @patam BindingResultを指定
 	 * @param Modelを指定
 	 * 
-	 * @return
+	 * @return ログイン成功："redirect:/reservable/search"　ログイン失敗："/common/login"
 	 * 
 	 */
 	@PostMapping("")
