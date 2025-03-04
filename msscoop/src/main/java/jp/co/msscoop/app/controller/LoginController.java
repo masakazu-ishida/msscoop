@@ -32,12 +32,11 @@ public class LoginController {
 
 	/**
 	 * MessageSourceインターフェースのオブジェクトをインジェクションする
-	 * messages.propertisからメッセージを取得するのに使用する
 	 */
 	private final MessageSource messageSource;
 	
 	/*
-	 * 
+	 * UserSharedServiceインターフェースのオブジェクトをインジェクションする
 	 * */
 	private final UserSharedService service;
 	
@@ -45,14 +44,14 @@ public class LoginController {
 	 * SessionScopeBeanとなる
 	 */
 	/**
-	 * 
+	 * UserSession(SessionScopeBean)インターフェースのオブジェクトをインジェクションする
 	 */
 	private final UserSession userSession;
 	
 	
 	/**
 	 * 画面初期化時にLoginForm()をModelにaddAttributeする
-	 * ■クラスレベルで宣言するアノテーション
+	 * ■メソッドレベルで宣言するアノテーション
 	 * @ModelAttribute
 	 * @return　LoginFormをインスタンス化して返す。初期値は不要
 	 */
@@ -76,14 +75,29 @@ public class LoginController {
 	
 	
 	/**
+	 * ログイン画面を表示する
 	 * 
-	 * @return
+	 * ■メソッドレベルで宣言するアノテーション
+	 * @GetMapping("")
+	 * 
+	 * @return ログイン画面を表すパス"/common/login"を返す
 	 */
 	@GetMapping("")
 	public String index() {
 		return "/common/login";
 	}
 	
+	/**
+	 * ログインを実行する
+	 * @PostMapping("")
+	 * 
+	 * @param　LoginFormを@Validatedをつけて指定
+	 * @patam BindingResultを指定
+	 * @param Modelを指定
+	 * 
+	 * @return
+	 * 
+	 */
 	@PostMapping("")
 	public String signIn(@Validated LoginForm form, BindingResult result, Model model) {
 		

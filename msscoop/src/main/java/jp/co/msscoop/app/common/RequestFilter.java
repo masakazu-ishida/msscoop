@@ -13,13 +13,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jp.co.msscoop.app.session.UserSession;
 
-
+/**
+ * リクエストの度に呼び出されるフィルター
+ * セッションが有効かどうか確認する
+ */
 @Component
 public class RequestFilter  implements Filter{
 	
+	/**
+	 * SessionScopeBeanをインジェクションする
+	 */
 	@Autowired
 	UserSession session;
 	
+	/**
+	 * ｒ
+	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
