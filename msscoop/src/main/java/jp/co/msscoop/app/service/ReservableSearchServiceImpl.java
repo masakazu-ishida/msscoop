@@ -20,7 +20,8 @@ public class ReservableSearchServiceImpl implements ReservableSearchService {
 	
 	private ReservableRoomInfoDAO reservableRoomInfoDAO;
 	
-	public ReservableSearchServiceImpl(ReservableRoomInfoDAO reservableRoomInfoDAO){
+	public ReservableSearchServiceImpl(ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource){
+		this.messageSource = messageSource;
 		this.reservableRoomInfoDAO = reservableRoomInfoDAO;
 		
 		
@@ -37,6 +38,15 @@ public class ReservableSearchServiceImpl implements ReservableSearchService {
 			String message = messageSource.getMessage("bus.error.sameday", null, Locale.JAPAN);
 			throw new BusinessException(message);
 		}
+		
+		//チェックアウトがチェックインインより過去日付の場合前の画面に戻る
+		if(diffDays < 0) {
+			String message = messageSource.getMessage("bus.error.pastday", null, Locale.JAPAN);
+			throw new BusinessException(message);
+		}
+		
+		
+		
 		
 		//ReservableRoomInfoはあくまで予約可能日（つまりチェックイン可能日）として登録されている。
 		//よってチェックアウト日の一日前を検索範囲とするため、チェックアウト日から１を引いた値を引数に渡す

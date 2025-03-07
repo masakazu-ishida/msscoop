@@ -92,27 +92,25 @@ public class LoginController {
 	}
 	
 	/**
+	 * <p>
 	 * ■概要
-	 * ログインを実行する
+	 * ログインを実行する</br>
 	 * 
-	 * ■メソッドレベルで宣言するアノテーション
-	 * @PostMapping("")
+	 * ■ロジック詳細</br>
+	 * ・result.hasErrorsで入力エラーが発生した場合</br>
+	 * 　ログイン画面に戻る</br>
+	 * ・インジェクションしたUserSharedService.authorizeで認証を行い、戻り値を取得</br>
+	 * ・authorize戻り値が非NULL（認証成功）</br>
+	 * 　SessionScopeBean.setLoginUserを呼び出し、UserInfoをセット。</br>
+	 * 　"redirect:/reservable/search"を返す</br>
 	 * 
-	 * ■ロジック詳細
-	 * ・入力エラーが発生した場合ログイン画面に戻る
-	 * ・インジェクションしたUserSharedServiceで認証を行う。戻り値にUserInfoを返す
-	 * ・認証成功
-	 * 　SessionScopeBean.setLoginUserを呼び出し、UserInfoをセット。
-	 * 　"redirect:/reservable/search"を返す
-	 * 
-	 * ・認証失敗時
-	 * 　"bus.error.authorized"をmessage.propertiesから取得し、キーerrormsgでModelにaddAttributeする
-	 * 　"/common/login"を返す
-	 * 
-	 * @param　LoginFormを@Validatedをつけて指定
-	 * @patam BindingResultを指定
-	 * @param Modelを指定
-	 * 
+	 * ・authorize戻り値がNULL（認証失敗時）</br>
+	 * 　キー"bus.error.authorized"をmessage.propertiesから取得し、キー"errormsg"でModelにaddAttributeする</br>
+	 * 　View名"/common/login"を返す</br>
+	 * </p>
+	 * @param　form LoginFormを@Validatedをつけて指定
+	 * @param result BindingResultを指定
+	 * @param model Modelを指定
 	 * @return ログイン成功："redirect:/reservable/search"　ログイン失敗："/common/login"
 	 * 
 	 */
