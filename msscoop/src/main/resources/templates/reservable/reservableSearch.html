@@ -11,7 +11,7 @@
 					             th:text="${errormsg}">
 					               authrize error </span>
 		<main>
-			<form th:object="${searchForm}" th:action="@{/reservable/search}" method="post">
+			<form th:object="${reservableSearchForm}" th:action="@{/reservable/search}" method="post">
 			<table border="0">
 				<tr><td>チェックイン日<input type="date" th:field="*{checkin}"></td>
 					<td>～チェックアウト日<input type="date" th:field="*{checkout}"></td></tr>

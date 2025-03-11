@@ -30,10 +30,16 @@ public class UserSession implements Serializable{
 		return loginUser;
 	}
 
-	public void setLoginUser(UserInfo loginUser) {
+	public void addLoginUser(UserInfo loginUser) {
 		this.loginUser = loginUser;
 	}
+	
+	public void removeLoginUser() {
+		this.loginUser = null;
+	}
 
+	
+	
 	public String getUserId() {
 		return userId;
 	}

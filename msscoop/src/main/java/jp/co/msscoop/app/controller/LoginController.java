@@ -139,7 +139,7 @@ public class LoginController {
 		}
 		else {
 			
-			userSession.setLoginUser(user);
+			userSession.addLoginUser(user);
 			//model.addAttribute("userSession", userSession);
 			return "redirect:/reservable/search"; 
 		}

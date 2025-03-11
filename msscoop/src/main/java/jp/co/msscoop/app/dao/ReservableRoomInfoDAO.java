@@ -12,6 +12,9 @@ import jp.co.msscoop.app.dto.ReservableRoomInfo;
 public interface ReservableRoomInfoDAO {
 	
 	/**
+	 * 
+	 * 予約可能な日を取得
+	 * 
 	 * SQLの組み立てかた
 		1.予約可能テーブルと予約テーブルを左外部結合（左：予約可能テーブル）する。
 		  これにより予約と紐づいたもの(NOT NULL)とないもの(NULL)が一覧で表示されるので、
@@ -34,6 +37,15 @@ public interface ReservableRoomInfoDAO {
 			@Param("smoking") boolean smoking);
 	
 	
+	/**
+	 * 
+	 * 指定したチェックイン日付でそのお部屋情報を取得。
+	 * 
+	 * 
+	 * @param roomId
+	 * @param firstCheckIn
+	 * @return 非NULL:既に予約済み NULL:予約可能
+	 */
 	public ReservableRoomInfo findById(
 			@Param("roomId") String  roomId,
 			@Param("businessDay")LocalDate firstCheckIn);

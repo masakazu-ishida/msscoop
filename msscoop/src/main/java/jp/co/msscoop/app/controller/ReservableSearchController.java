@@ -22,15 +22,20 @@ import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.exception.UseCaseException;
 import jp.co.msscoop.app.form.ReservableSearchForm;
 import jp.co.msscoop.app.service.ReservableSearchService;
+import jp.co.msscoop.app.session.ReservableSearchFormSession;
 
 @Controller
-@SessionAttributes("searchForm")
+//@SessionAttributes("reservableSearchForm")
 @RequestMapping("/reservable/search")
 public class ReservableSearchController {
 	/**
 	 * 
 	 */
 	private final ReservableSearchService service;
+	
+	
+	
+	private final ReservableSearchFormSession searchFormSession;
 
 	/**
 	 * 
@@ -42,39 +47,38 @@ public class ReservableSearchController {
 	 * @param service
 	 * @param messageSource
 	 */
-	public ReservableSearchController(MessageSource messageSource,ReservableSearchService service) {
+	public ReservableSearchController(MessageSource messageSource,ReservableSearchService service,ReservableSearchFormSession searchFormSession) {
 		this.service = service;
 		this.messageSource = messageSource;
+		this.searchFormSession = searchFormSession;
 	}
 
+	
 	/**
-	 * 
-	 * @return
-	 */
-	@ModelAttribute
-	public ReservableSearchForm setupForm() {
-
-		ReservableSearchForm form = new ReservableSearchForm();
-
-		form.setInDoorBath(false);
-		form.setSmoking(false);
-		form.setCheckin(LocalDate.now());
-		form.setCheckout(LocalDate.now().plusDays(1));
-		return form;
-	}
-
-	/**
+	 * 空室検索画面を表示
 	 * 
 	 * @return
 	 */
 	@GetMapping("")
-	public String index() {
+	public String index(Model model) {
+		
+		
+		ReservableSearchForm searchForm = searchFormSession.getSearchForm();
+		//一度も検索を実行していない場合、検索条件が空なのでインスタンス化
+		if(searchForm == null) {
+			searchForm = new ReservableSearchForm();
+			searchForm.setInDoorBath(false);
+			searchForm.setSmoking(false);
+			searchForm.setCheckin(LocalDate.now());
+			searchForm.setCheckout(LocalDate.now().plusDays(1));
+		}
+		model.addAttribute("reservableSearchForm", searchForm);
 		return "/reservable/reservableSearch";
 
 	}
 
 	/**
-	 * 
+	 * 検索条件を元に空室検索を実行し、結果を一覧に表示する
 	 * @param form
 	 * @param model
 	 * @return
@@ -90,7 +94,10 @@ public class ReservableSearchController {
 				model.addAttribute("errormsg", errorMesage);
 				return "/reservable/reservableSearch";
 			}
-			model.addAttribute("searchForm", form);
+			//次回検索に備えて検索条件をセッションに格納
+			searchFormSession.addSearchForm(form);
+			
+			
 			model.addAttribute("reservableRoomList", reservableRoomList);
 			return "/reservable/reservableSearchResult";
 		} catch (BusinessException e) {
