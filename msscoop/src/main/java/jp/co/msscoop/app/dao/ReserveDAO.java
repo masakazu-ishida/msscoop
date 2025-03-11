@@ -13,9 +13,8 @@ import jp.co.msscoop.app.dto.Room;
 @Mapper
 public interface ReserveDAO {
 	public Reserve findById(@Param("reserveId")String reserveId);
-	
+	public Reserve findByCond(@Param("checkIn") LocalDate checkIn);
 	public String findNewId(@Param("checkIn") LocalDate checkIn);
-	
 	public int  insert(Reserve reserve);
 
 }

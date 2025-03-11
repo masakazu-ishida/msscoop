@@ -9,13 +9,15 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.msscoop.app.common.EMailSender;
 import jp.co.msscoop.app.dao.ReservableRoomInfoDAO;
 import jp.co.msscoop.app.dao.ReserveDAO;
 import jp.co.msscoop.app.dto.ReservableRoomInfo;
 import jp.co.msscoop.app.dto.Reserve;
+import jp.co.msscoop.app.dto.Room;
 import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.exception.BusinessException;
-import jp.co.msscoop.app.form.ReserveRegisterForm;
+import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.session.UserSession;
 
 @Service
@@ -25,22 +27,26 @@ public class ReserveServiceImpl implements ReserveService {
 	private final ReserveDAO reserveDAO;
 	private final ReservableRoomInfoDAO reservableRoomInfoDAO;
 	private final MessageSource messageSource;
+	private final EMailSender emailSender;
 	
-	public ReserveServiceImpl(ReserveDAO reserveDAO, ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource,UserSession userSession){
+	/**
+	 * 部屋情報にアクセスするためRoomServiceをインジェクションする
+	 */
+	private final RoomService roomService;
+	
+	
+	public ReserveServiceImpl(ReserveDAO reserveDAO, ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource,UserSession userSession,RoomService roomService,EMailSender emailSender){
 		this.reserveDAO = reserveDAO;
 		this.reservableRoomInfoDAO = reservableRoomInfoDAO;
 		this.messageSource = messageSource;
 		this.userSession= userSession;
+		this.roomService = roomService;
+		this.emailSender = emailSender;
 	}
 	
 	@Transactional
 	@Override
-	public String register(ReserveRegisterForm registerForm) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-		
-		
-		
+	public String register(ReserveForm registerForm) {
 		//予約のバッティングをしないよう、ロックを掛ける
 		ReservableRoomInfo reservedInfo = reservableRoomInfoDAO.findById(registerForm.getRoomId(), registerForm.getCheckIn());
 		if(reservedInfo != null) {
@@ -54,11 +60,15 @@ public class ReserveServiceImpl implements ReserveService {
 		BeanUtils.copyProperties(registerForm, reserve);
 		
 		
+		//ユーザ情報の初期化
 		UserInfo loginUser = userSession.getLoginUser();
 		reserve.setUser(loginUser);
 		
-		String userId = userSession.getLoginUser().getUserId();
+		String userId = loginUser.getUserId();
 		reserve.setUserId(userId);
+		
+		//キャンセルフラグを０で初期化
+		reserve.setCancel("0");
 		
 		
 		//チェックアウト日をチェックインの翌日に設定
@@ -70,6 +80,8 @@ public class ReserveServiceImpl implements ReserveService {
 		reserve.setReserveId(newId);
 		try {
 			if( reserveDAO.insert(reserve) == 1) {
+				
+				emailSender.send(loginUser.getEmail(), "ご予約の案内", "本日はご予約ありがとうございました。", false);
 				return newId;
 			}
 			else {
@@ -79,6 +91,23 @@ public class ReserveServiceImpl implements ReserveService {
 		catch(Exception e) {
 			throw e;
 		}
+	}
+	@Override
+	public ReserveForm input(ReserveForm registerForm) {
+		// TODO 自動生成されたメソッド・スタブ
+		registerForm.setMeal(true);
+		registerForm.setStayNumberOfPeople(1);
+		return registerForm;
+	}
+	
+	@Override
+	public ReserveForm confirm(ReserveForm registerForm) {
+		// TODO 自動生成されたメソッド・スタブ
+		//お部屋情報を取得する。
+		Room room = roomService.findById(registerForm.getRoomId());
+		//Formに１泊二日の宿泊料金をセット
+		registerForm.setAmount(room.getPrice() * registerForm.getStayNumberOfPeople());
+		return registerForm;
 	}
 
 }

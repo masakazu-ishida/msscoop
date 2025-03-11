@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import jp.co.msscoop.app.dto.ReservableRoomInfo;
 import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.exception.UseCaseException;
-import jp.co.msscoop.app.form.SearchForm;
+import jp.co.msscoop.app.form.ReservableSearchForm;
 import jp.co.msscoop.app.service.ReservableSearchService;
 
 @Controller
@@ -52,9 +52,9 @@ public class ReservableSearchController {
 	 * @return
 	 */
 	@ModelAttribute
-	public SearchForm setupForm() {
+	public ReservableSearchForm setupForm() {
 
-		SearchForm form = new SearchForm();
+		ReservableSearchForm form = new ReservableSearchForm();
 
 		form.setInDoorBath(false);
 		form.setSmoking(false);
@@ -80,7 +80,7 @@ public class ReservableSearchController {
 	 * @return
 	 */
 	@PostMapping(params = "execute")
-	public String search(SearchForm form, Model model) {
+	public String search(ReservableSearchForm form, Model model) {
 		try {
 			List<ReservableRoomInfo> reservableRoomList = service.search(form.getCheckin(), form.getCheckout(),
 					form.isInDoorBath(), form.isSmoking());

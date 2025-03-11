@@ -1,8 +1,13 @@
 package jp.co.msscoop.app.service;
 
-import jp.co.msscoop.app.form.ReserveRegisterForm;
+import jp.co.msscoop.app.form.ReserveForm;
 
 public interface ReserveService {
-	String register(ReserveRegisterForm registerForm);
+	
+	ReserveForm input(ReserveForm registerForm);
+	ReserveForm confirm(ReserveForm registerForm);
+	String register(ReserveForm registerForm);
+	
+	
 
 }

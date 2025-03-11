@@ -3,12 +3,12 @@
 <mapper namespace="jp.co.msscoop.app.dao.UserInfoDAO">
 	
 	<select id="findById" resultType="jp.co.msscoop.app.dto.UserInfo">
-		SELECT user_id as username, password, role, full_name as fullName
+		SELECT user_id as userId, password, role, full_name as fullName, email
 			FROM public.r_user
-		where r_user.user_id = #{username}
+		where r_user.user_id = #{userId}
 	</select>
 	<select id="findAll" resultType="jp.co.msscoop.app.dto.UserInfo">
-		SELECT user_id as username, password, role, full_name as fullName 
+		SELECT user_id as userId, password, role, full_name as fullName , email
 			FROM public.r_user
 		
 	</select>

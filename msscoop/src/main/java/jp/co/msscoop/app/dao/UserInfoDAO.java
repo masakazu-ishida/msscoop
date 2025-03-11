@@ -10,6 +10,6 @@ import jp.co.msscoop.app.dto.UserInfo;
 
 @Mapper
 public interface UserInfoDAO {
-	UserInfo findById(@Param("username") String username);
+	UserInfo findById(@Param("userId") String userId);
 	List<UserInfo> findAll();
 }

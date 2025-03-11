@@ -14,7 +14,7 @@ public class Reserve {
 	private int stayNumberOfPeople;
 	private boolean meal;
 	private int amount;
-	
+	private String cancel;
 	private UserInfo user;
 	private Room room;
 	

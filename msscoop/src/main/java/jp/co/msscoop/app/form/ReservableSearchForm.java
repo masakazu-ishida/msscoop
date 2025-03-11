@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class SearchForm {
+public class ReservableSearchForm {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate checkin;

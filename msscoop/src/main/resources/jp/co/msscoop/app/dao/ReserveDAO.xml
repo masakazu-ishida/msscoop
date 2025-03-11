@@ -14,6 +14,23 @@
 
 	</select>
 	
+	<select id="findById" resultType="jp.co.msscoop.app.dto.Reserve">
+		SELECT rsv.reserve_id, 
+				rsv.room_id, 
+				rsv.checkin, 
+				rsv.checkout, 
+				rsv.stay_number_of_people, 
+				rsv.meal, 
+				rsv.amount, 
+				rsv.user_id,
+       			rm.room_name
+		FROM 
+			public.e_reserve rsv 
+		INNER JOIN r_user usr ON usr.user_id = rsv.user_id
+		INNER JOIN r_room rm ON rsv.room_id = rm.room_id
+		WHERE rsv.reserve_id = #{reserveId}
+	</select>
+	
 	
 	<insert id="insert" parameterType="jp.co.msscoop.app.dto.Reserve">
 		INSERT INTO public.e_reserve(
@@ -24,7 +41,8 @@
 			checkOut, 
 			stay_number_of_people, 
 			meal, 
-			amount)
+			amount,
+			cancel)
 	VALUES (#{reserveId}, 
 			#{userId}, 
 			#{roomId}, 
@@ -32,7 +50,8 @@
 			#{checkOut}, 
 			#{stayNumberOfPeople},
 			#{meal},
-			#{amount});
+			#{amount},
+			#{cancel});
 	</insert>
 	
 	

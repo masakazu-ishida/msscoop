@@ -13,9 +13,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jp.co.msscoop.app.common.EMailSender;
 import jp.co.msscoop.app.dto.Room;
 import jp.co.msscoop.app.exception.UseCaseException;
-import jp.co.msscoop.app.form.ReserveRegisterForm;
+import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.service.ReserveService;
 import jp.co.msscoop.app.service.RoomService;
 import jp.co.msscoop.app.session.UserSession;
@@ -25,20 +26,17 @@ import jp.co.msscoop.app.session.UserSession;
 @RequestMapping("/reserve/register")
 public class ReserveRegisterController {
 	
-	/**
-	 * 部屋情報にアクセスするためRoomServiceをインジェクションする
-	 */
-	private final RoomService roomService;
 	
 	/**
 	 * 予約情報にアクセスするためReserveServiceをインジェクションする
 	 */
 	private final ReserveService reserveService;
 	
-	public ReserveRegisterController(RoomService roomService,ReserveService reserveService,UserSession userSession) {
+	
+	public ReserveRegisterController(ReserveService reserveService,EMailSender mailSender) {
 		
-		this.roomService = roomService; 
 		this.reserveService = reserveService;
+		
 		
 	}
 	
@@ -56,8 +54,8 @@ public class ReserveRegisterController {
 	 * @return
 	 */
 	@ModelAttribute("registerForm")
-	public ReserveRegisterForm setupForm() {
-		return new ReserveRegisterForm();
+	public ReserveForm setupForm() {
+		return new ReserveForm();
 	}
 
 	/**
@@ -68,37 +66,68 @@ public class ReserveRegisterController {
 	 * @return
 	 */
 	@PostMapping(params = "input")
-	public String input(@ModelAttribute("registerForm")ReserveRegisterForm registerForm , BindingResult result,  Model model) {
-		registerForm.setMeal(true);
-		registerForm.setStayNumberOfPeople(1);
-		model.addAttribute("registerForm", registerForm);
+	public String input(@ModelAttribute("registerForm")ReserveForm registerForm , BindingResult result,  Model model) {
+		reserveService.input(registerForm);
+		
+		//model.addAttribute("registerForm", registerForm);
 		return "/reserve/register/input";
 	}
 	
+	/**
+	 * 入力画面からのリクエストを受け取り、確認画面を表示する
+	 * 
+	 * @param registerForm
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(params = "confirm")
-	public String confirm(@ModelAttribute("registerForm") ReserveRegisterForm registerForm, Model model) {
-		Room room = roomService.findById(registerForm.getRoomId());
-		//連泊はサポートしない。Room.priceがReserveのamount
-		registerForm.setAmount(room.getPrice() * registerForm.getStayNumberOfPeople());
-		model.addAttribute("registerForm", registerForm);
+	public String confirm(@ModelAttribute("registerForm") ReserveForm registerForm, Model model) {
+		
+		reserveService.confirm(registerForm);
+		
+		//
+		//model.addAttribute("registerForm", registerForm);
 		return "/reserve/register/confirm";
 	}
 	
 	@PostMapping(params = "commit")
-	public String commit(@ModelAttribute("registerForm") ReserveRegisterForm registerForm,RedirectAttributes redirectAttr) {
+	public String commit(@ModelAttribute("registerForm") ReserveForm registerForm,RedirectAttributes redirectAttr) {
 		
+		
+		//reserveService.registerを呼び出し、予約を実行する。戻り値に予約IDを返す。
 		String id  = reserveService.register(registerForm);
 		
-		//予約情報をリダイレクト先に伝える
+		//FlushScopeで予約IDをリダイレクト先に伝える
 		redirectAttr.addFlashAttribute("reserveId", id);
 		
+		//完了画面に遷移するcompleteメソッドにリダイレクトする。直接完了画面に遷移しないこと
 		return "redirect:/reserve/register?complete";
 	}
 	
+	/**
+	 * 1.、
+	 * 2.
+	 * 3.
+	 * 
+	 * 
+	 * @param model 完了画面に予約IDを出力する
+	 * @param reserveId FlashScopeで渡された予約ID。
+	 * @param status セッションから不要なオブジェクトを取り除く
+	 * @return 完了画面"/reserve/register/complete"を返す
+	 */
 	@GetMapping(params = "complete")
 	public String complete(Model model, @ModelAttribute("reserveId") String reserveId, SessionStatus status) {
-		status.setComplete();
+		
+		
+		
+		
+		//model.addAttributeで出力先画面に予約IDを渡す
 		model.addAttribute("reserveId",reserveId);
+		
+		//status.setCompleteを呼び出し、セッションから予約Formを取り除く
+		status.setComplete();
+		
+		//完了画面に遷移する
 		return "/reserve/register/complete";
 	}
 	
