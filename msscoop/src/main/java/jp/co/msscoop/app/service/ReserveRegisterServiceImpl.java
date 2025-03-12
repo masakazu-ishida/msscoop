@@ -21,7 +21,7 @@ import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.session.UserSession;
 
 @Service
-public class ReserveServiceImpl implements ReserveService {
+public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 
 	private final UserSession userSession;
 	private final ReserveDAO reserveDAO;
@@ -35,7 +35,7 @@ public class ReserveServiceImpl implements ReserveService {
 	private final RoomService roomService;
 	
 	
-	public ReserveServiceImpl(ReserveDAO reserveDAO, ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource,UserSession userSession,RoomService roomService,EMailSender emailSender){
+	public ReserveRegisterServiceImpl(ReserveDAO reserveDAO, ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource,UserSession userSession,RoomService roomService,EMailSender emailSender){
 		this.reserveDAO = reserveDAO;
 		this.reservableRoomInfoDAO = reservableRoomInfoDAO;
 		this.messageSource = messageSource;
