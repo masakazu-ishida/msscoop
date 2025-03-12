@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class ReservableSearchServiceImpl implements ReservableSearchService {
 	private MessageSource messageSource;
 	
 	private ReservableRoomInfoDAO reservableRoomInfoDAO;
+	
 	
 	public ReservableSearchServiceImpl(ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource){
 		this.messageSource = messageSource;
@@ -44,9 +46,6 @@ public class ReservableSearchServiceImpl implements ReservableSearchService {
 			String message = messageSource.getMessage("bus.error.pastday", null, Locale.JAPAN);
 			throw new BusinessException(message);
 		}
-		
-		
-		
 		
 		//ReservableRoomInfoはあくまで予約可能日（つまりチェックイン可能日）として登録されている。
 		//よってチェックアウト日の一日前を検索範囲とするため、チェックアウト日から１を引いた値を引数に渡す

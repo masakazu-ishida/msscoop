@@ -15,16 +15,6 @@
 										<tr><td>1名1泊 </td><td th:text="${#numbers.formatInteger(item.room.price, 3, 'COMMA') + '円'}"></td> </tr>
 										<tr><td>内風呂 </td><td th:text="${item.room.inDoorBathRoom == false} ? 'なし' : 'あり'"></td> </tr>
 										<tr><td>喫煙 </td><td th:text="${item.room.smoking == false} ? '禁煙' : '喫煙OK'"></td> </tr>
-										
-										<!-- formに送る -->
-										<tr><td><input type="hidden" name="roomId" th:value="${item.room.roomId}"></td></tr>
-										<tr><td><input type="hidden" name="roomName" th:value="${item.room.roomName}"></td></tr>
-										<tr><td><input type="hidden" name="roomImage" th:value="${item.room.roomImage}"></td></tr>
-										<tr><td><input type="hidden" name="checkIn" th:value="${item.businessday}"></td></tr>
-										<tr><td><input type="hidden" name="inDoorBathRoom" th:value="${item.room.inDoorBathRoom}"></td></tr>
-										<tr><td><input type="hidden" name="smoking" th:value="${item.room.smoking}"></td></tr>
-										<tr><td><input type="hidden" name="price" th:value="${item.room.price}"></td></tr>
-								
 								<form th:action="@{/reserve/update}" method="post">
 									<input type="submit" name="input" value="変更">										
 								</form>

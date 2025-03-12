@@ -1,6 +1,9 @@
 package jp.co.msscoop.app.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -114,7 +117,7 @@ public class LoginController {
 	 * @return ログイン成功："redirect:/reservable/search"　ログイン失敗："/common/login"
 	 * 
 	 */
-	@PostMapping("")
+	//@PostMapping("")
 	public String signIn(@Validated LoginForm form, BindingResult result, Model model) {
 		
 		//String型変数messageを宣言

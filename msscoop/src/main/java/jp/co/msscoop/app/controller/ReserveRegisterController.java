@@ -12,14 +12,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import jp.co.msscoop.app.common.EMailSender;
-import jp.co.msscoop.app.dto.Room;
 import jp.co.msscoop.app.exception.UseCaseException;
 import jp.co.msscoop.app.form.ReserveForm;
-import jp.co.msscoop.app.service.ReserveService;
-import jp.co.msscoop.app.service.RoomService;
-import jp.co.msscoop.app.session.UserSession;
+import jp.co.msscoop.app.service.ReserveRegisterService;
+
 
 @Controller
 @SessionAttributes("registerForm")
@@ -30,10 +26,10 @@ public class ReserveRegisterController {
 	/**
 	 * 予約情報にアクセスするためReserveServiceをインジェクションする
 	 */
-	private final ReserveService reserveService;
+	private final ReserveRegisterService reserveService;
 	
 	
-	public ReserveRegisterController(ReserveService reserveService,EMailSender mailSender) {
+	public ReserveRegisterController(ReserveRegisterService reserveService) {
 		
 		this.reserveService = reserveService;
 		
