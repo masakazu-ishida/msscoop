@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.form.LoginForm;
 import jp.co.msscoop.app.service.UserSharedService;
-import jp.co.msscoop.app.session.UserSession;
+
 
 /**
  * ■ログイン処理を行う
@@ -46,10 +46,7 @@ public class LoginController {
 	/**
 	 * SessionScopeBeanとなる
 	 */
-	/**
-	 * UserSession(SessionScopeBean)インターフェースのオブジェクトをインジェクションする
-	 */
-	private final UserSession userSession;
+	
 	
 	
 	/**
@@ -70,10 +67,10 @@ public class LoginController {
 	 * @param service UserSharedServiceを渡す
 	 * @param sessionBean UserSessionを渡す
 	 */
-	public LoginController(MessageSource messageSource, UserSharedService service,UserSession sessionBean) {
+	public LoginController(MessageSource messageSource, UserSharedService service) {
 		this.messageSource = messageSource;
 		this.service = service;
-		this.userSession = sessionBean;
+		
 	}
 	
 	
@@ -117,6 +114,7 @@ public class LoginController {
 	 * @return ログイン成功："redirect:/reservable/search"　ログイン失敗："/common/login"
 	 * 
 	 */
+	/*
 	@PostMapping("/loginProcess")
 	public String signIn(@Validated LoginForm form, BindingResult result, Model model) {
 		
@@ -147,4 +145,5 @@ public class LoginController {
 			return "redirect:/reservable/search"; 
 		}
 	}
+	*/
 }
