@@ -22,11 +22,9 @@
             </li>
 			
 			<li>
-				
-				
-			  <div th:text="${'ようこそ' + @userSession.loginUser.fullName + 'さん'}"></div>
-
-			  		 
+				<div class="navbar-text" th:if="${#authorization.expression('isAuthenticated()')}">
+				        ようこそ <span sec:authentication="principal.fullName"></span> さん
+				</div>	 
            </li>
         </ul>
   </nav>	
