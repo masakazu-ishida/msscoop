@@ -3,9 +3,11 @@ package jp.co.msscoop.app.common;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,29 +26,65 @@ public class SpringSecuriyConfig  {
 	}
 	
 	
+
+	
+	
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		
+		/*
 		AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
 	    builder.userDetailsService(userDetailsService);
+	   
 	    AuthenticationManager manager = builder.build();
-	
+	    */
+		
+		//ログイン認証を実行するサービスインターフェース
+		http.userDetailsService(userDetailsService);
+		
+		//認可の設定
+		http.authorizeHttpRequests( (customizer)-> customizer
+				
+				// admiはADMINロール以外アクセス不可能
+		        .requestMatchers("/admin").hasRole("ADMIN")		
+		        // 認証対象外のURL指定（静的ファイル、エラーページ遷移のURL）
+		        .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
+		        // ログイン画面のURLも認証対象外とする
+		        .requestMatchers("/login").permitAll()
+		        // 上記以外は認証が必要
+		        .anyRequest().authenticated()		
+		);
+		
+		/*
+		
+	    //認可の設定
 	    http.authenticationManager(manager)
 	        .authorizeHttpRequests((auth) -> auth
-	            // 認証対象外のURL指定（静的ファイル、エラーページ遷移のURL）
+	        ///admiはADMINロール以外アクセス不可能
+	        .requestMatchers("/admin").hasRole("ADMIN")		
+	        // 認証対象外のURL指定（静的ファイル、エラーページ遷移のURL）
 	        .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
 	        // ログイン画面のURLも認証対象外とする
 	        .requestMatchers("/login").permitAll()
 	        // 上記以外は認証が必要
-	        .anyRequest().authenticated());
-	
+	        .anyRequest().authenticated()
+	        );
+	*/
 		// フォーム認証の設定
 		http.formLogin((formLogin) -> formLogin
+			//リクエストパラメータのユーザIDの名前
+			.usernameParameter("userId")
+			//リクエストパラメータのパスワードを名前
+			.passwordParameter("password")
 		    // フォーム認証のログイン画面のURL
 		    .loginPage("/login")
 		    // 認証成功時に遷移するURL
-		    .defaultSuccessUrl("/reservable/search"));
-		    // Form認証成功時にユーザオブジェクトを構築するハンドラーを追加する
+		    .defaultSuccessUrl("/reservable/search")
+		    
+		    
+		 	//失敗した時のURL
+	    	.failureUrl("/login?error"));
 		    
 		
 		// ログアウト処理の設定
@@ -55,10 +93,11 @@ public class SpringSecuriyConfig  {
 		    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		    // ログアウト成功時のURL（ログイン画面に遷移）
 		    .logoutSuccessUrl("/login")
+		   
 		    // Cookieの値を削除する
 		    .deleteCookies("JSESSIONID")
 		    // セッションを無効化する
-		        .invalidateHttpSession(true).permitAll());
+		    .invalidateHttpSession(true).permitAll());
 		
 		    return http.build();
 	}
@@ -72,3 +111,4 @@ public class SpringSecuriyConfig  {
         return new BCryptPasswordEncoder();
     }
 }
+

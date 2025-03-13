@@ -11,7 +11,7 @@ public class LoginForm {
 	
 	@NotEmpty
 	@Size(min=1, max=20)
-	private String username;
+	private String userId;
 	@NotEmpty
 	
 	private String password;

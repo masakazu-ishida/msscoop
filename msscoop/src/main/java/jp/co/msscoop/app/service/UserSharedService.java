@@ -5,5 +5,6 @@ import jp.co.msscoop.app.dto.UserInfo;
 public interface UserSharedService {
 	
 	UserInfo authorize(String id,String password);
+	boolean register(UserInfo info);
 
 }

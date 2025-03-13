@@ -129,7 +129,7 @@ public class LoginController {
 			return "/common/login"; 
 		}
 		//
-		UserInfo user = service.authorize(form.getUsername(), form.getPassword());
+		UserInfo user = service.authorize(form.getUserId(), form.getPassword());
 		//
 		if(user == null) {
 			
