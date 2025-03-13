@@ -1,6 +1,6 @@
 package jp.co.msscoop.app.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,10 @@ public class UserSharedServiceImpl implements UserSharedService {
 		
 		UserInfo user = dao.findById(id);
 		if(user != null) {
-			if(user.getPassword().equals(password)) {
+			
+			
+			String encodePassword  =passEncoder.encode(user.getPassword());
+			if(encodePassword.equals(password)) {
 				return user;
 			}
 		}

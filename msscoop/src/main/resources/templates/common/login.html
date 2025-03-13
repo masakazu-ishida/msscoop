@@ -15,11 +15,14 @@
 		<h4>ようこそ　三朝温泉旅館美人の湯へ</h4>
 		<br>
 	    <h2>ログイン</h2>
-		<span class="text-danger"
-			             th:if="${errormsg != null}"
-			             th:text="${errormsg}">
-			               authrize error </span>
-	    <form method="post" th:action="@{/login}" th:object="${loginForm}">
+		   
+	   　<p th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null"
+	               th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
+	               class="text-danger">
+	               ログインエラーメッセージ
+	           </p>				   
+						   
+	    <form method="post" th:action="@{/loginProcess}" th:object="${loginForm}">
 			
 					
 	        <label>ユーザーID</label>

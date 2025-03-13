@@ -30,7 +30,7 @@ import jp.co.msscoop.app.session.UserSession;
  * 
  */
 @Controller
-@RequestMapping("/login")
+@RequestMapping("")
 public class LoginController {
 
 	/**
@@ -89,7 +89,7 @@ public class LoginController {
 	 * 
 	 * @return ログイン画面を表すパス"/common/login"を返す
 	 */
-	@GetMapping("")
+	@GetMapping("/login")
 	public String index() {
 		return "/common/login";
 	}
@@ -117,7 +117,7 @@ public class LoginController {
 	 * @return ログイン成功："redirect:/reservable/search"　ログイン失敗："/common/login"
 	 * 
 	 */
-	//@PostMapping("")
+	@PostMapping("/loginProcess")
 	public String signIn(@Validated LoginForm form, BindingResult result, Model model) {
 		
 		//String型変数messageを宣言

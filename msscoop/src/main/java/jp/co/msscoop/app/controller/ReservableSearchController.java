@@ -76,6 +76,17 @@ public class ReservableSearchController {
 		return "/reservable/reservableSearch";
 
 	}
+	
+	@PostMapping("")
+	public String index2(Model model) {
+		
+		return index(model);
+
+	}
+	
+	
+	
+	
 
 	/**
 	 * 検索条件を元に空室検索を実行し、結果を一覧に表示する
