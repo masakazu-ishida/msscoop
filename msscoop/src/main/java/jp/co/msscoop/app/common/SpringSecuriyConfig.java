@@ -49,7 +49,7 @@ public class SpringSecuriyConfig  {
 				
 				//認証対象外のURL指定（静的ファイル、loginページ遷移のURL）
 				.requestMatchers("/login").permitAll()
-				.requestMatchers("loginProcess").permitAll()
+				.requestMatchers("/loginProcess").permitAll()
 				
 				// admiはADMINロール以外アクセス不可能
 		        .requestMatchers("/admin").hasRole("ADMIN")		
@@ -80,6 +80,17 @@ public class SpringSecuriyConfig  {
 				
 			);
 		    
+		
+		
+		http.sessionManagement((cusstomizer)->cusstomizer
+				
+				.enableSessionUrlRewriting(false)
+				.maximumSessions(1)
+				);
+		
+		
+		
+		
 		
 		// ログアウト処理の設定
 		http.logout((logout) -> logout

@@ -1,5 +1,7 @@
 package jp.co.msscoop.app.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jp.co.msscoop.app.dto.UserDetailsImpl;
+import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.exception.UseCaseException;
 import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.service.ReserveRegisterService;
@@ -87,11 +92,13 @@ public class ReserveRegisterController {
 	}
 	
 	@PostMapping(params = "commit")
-	public String commit(@ModelAttribute("registerForm") ReserveForm registerForm,RedirectAttributes redirectAttr) {
+	public String commit(@ModelAttribute("registerForm") ReserveForm registerForm,
+			@AuthenticationPrincipal UserDetailsImpl info,
+			RedirectAttributes redirectAttr) {
 		
 		
 		//reserveService.registerを呼び出し、予約を実行する。戻り値に予約IDを返す。
-		String id  = reserveService.register(registerForm);
+		String id  = reserveService.register(registerForm,info.getUserInfo());
 		
 		//FlushScopeで予約IDをリダイレクト先に伝える
 		redirectAttr.addFlashAttribute("reserveId", id);

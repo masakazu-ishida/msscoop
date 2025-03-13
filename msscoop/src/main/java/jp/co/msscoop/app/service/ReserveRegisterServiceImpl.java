@@ -18,12 +18,12 @@ import jp.co.msscoop.app.dto.Room;
 import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.form.ReserveForm;
-import jp.co.msscoop.app.session.UserSession;
+
 
 @Service
 public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 
-	private final UserSession userSession;
+	
 	private final ReserveDAO reserveDAO;
 	private final ReservableRoomInfoDAO reservableRoomInfoDAO;
 	private final MessageSource messageSource;
@@ -35,18 +35,17 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 	private final RoomService roomService;
 	
 	
-	public ReserveRegisterServiceImpl(ReserveDAO reserveDAO, ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource,UserSession userSession,RoomService roomService,EMailSender emailSender){
+	public ReserveRegisterServiceImpl(ReserveDAO reserveDAO, ReservableRoomInfoDAO reservableRoomInfoDAO,MessageSource messageSource,RoomService roomService,EMailSender emailSender){
 		this.reserveDAO = reserveDAO;
 		this.reservableRoomInfoDAO = reservableRoomInfoDAO;
 		this.messageSource = messageSource;
-		this.userSession= userSession;
 		this.roomService = roomService;
 		this.emailSender = emailSender;
 	}
 	
 	@Transactional
 	@Override
-	public String register(ReserveForm registerForm) {
+	public String register(ReserveForm registerForm, UserInfo userinfo) {
 		//予約のバッティングをしないよう、ロックを掛ける
 		ReservableRoomInfo reservedInfo = reservableRoomInfoDAO.findById(registerForm.getRoomId(), registerForm.getCheckIn());
 		if(reservedInfo != null) {
@@ -61,10 +60,10 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 		
 		
 		//ユーザ情報の初期化
-		UserInfo loginUser = userSession.getLoginUser();
-		reserve.setUser(loginUser);
 		
-		String userId = loginUser.getUserId();
+		reserve.setUser(userinfo);
+		
+		String userId = userinfo.getUserId();
 		reserve.setUserId(userId);
 		
 		//キャンセルフラグを０で初期化
@@ -81,7 +80,7 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 		try {
 			if( reserveDAO.insert(reserve) == 1) {
 				
-				emailSender.send(loginUser.getEmail(), "ご予約の案内", "本日はご予約ありがとうございました。", false);
+				emailSender.send(userinfo.getEmail(), "ご予約の案内", "本日はご予約ありがとうございました。", false);
 				return newId;
 			}
 			else {

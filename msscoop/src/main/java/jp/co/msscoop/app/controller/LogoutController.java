@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
 import jp.co.msscoop.app.session.ReservableSearchFormSession;
-import jp.co.msscoop.app.session.UserSession;
 
-@Controller
-@RequestMapping("/logout")
+
+
+//@Controller
+//@RequestMapping("/logout")
 public class LogoutController {
 	
-	private final UserSession userSession;
+	
 	private final ReservableSearchFormSession searchFormSession;
 	
-	public LogoutController(UserSession sessionBean,ReservableSearchFormSession searchFormSession) {
+	public LogoutController(ReservableSearchFormSession searchFormSession) {
 		
-		this.userSession = sessionBean;
 		this.searchFormSession = searchFormSession;
 	}
 	
@@ -26,7 +26,6 @@ public class LogoutController {
 	@GetMapping("")
 	public String index() {
 		//セッションBeanで格納されているデータを削除
-		userSession.addLoginUser(null);
 		searchFormSession.removeSearchForm();
 		
 		return "redirect:/login";

@@ -24,8 +24,4 @@ public class ReservableSearchFormSession {
 	public void removeSearchForm() {
 		this.searchForm = null;
 	}
-	
-	
-	
-
 }
