@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,15 +34,9 @@ public class SpringSecuriyConfig  {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
-		/*
-		AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-	    builder.userDetailsService(userDetailsService);
-	   
-	    AuthenticationManager manager = builder.build();
-	    */
-		
 		//ログイン認証を実行するサービスインターフェース
 		http.userDetailsService(userDetailsService);
+		
 		
 		//認可の設定
 		http.authorizeHttpRequests( (customizer)-> customizer
@@ -56,21 +51,7 @@ public class SpringSecuriyConfig  {
 		        .anyRequest().authenticated()		
 		);
 		
-		/*
-		
-	    //認可の設定
-	    http.authenticationManager(manager)
-	        .authorizeHttpRequests((auth) -> auth
-	        ///admiはADMINロール以外アクセス不可能
-	        .requestMatchers("/admin").hasRole("ADMIN")		
-	        // 認証対象外のURL指定（静的ファイル、エラーページ遷移のURL）
-	        .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
-	        // ログイン画面のURLも認証対象外とする
-	        .requestMatchers("/login").permitAll()
-	        // 上記以外は認証が必要
-	        .anyRequest().authenticated()
-	        );
-	*/
+	
 		// フォーム認証の設定
 		http.formLogin((formLogin) -> formLogin
 			//リクエストパラメータのユーザIDの名前
@@ -81,8 +62,6 @@ public class SpringSecuriyConfig  {
 		    .loginPage("/login")
 		    // 認証成功時に遷移するURL
 		    .defaultSuccessUrl("/reservable/search")
-		    
-		    
 		 	//失敗した時のURL
 	    	.failureUrl("/login?error"));
 		    
@@ -110,5 +89,20 @@ public class SpringSecuriyConfig  {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+}
+
+
+//ラムダを使わない場合
+class LogoutCustomizer implements Customizer <LogoutConfigurer <HttpSecurity>>{
+	
+	
+	@Override
+	public void customize(LogoutConfigurer<HttpSecurity> configurer) {
+		
+		configurer.invalidateHttpSession(true);
+		configurer.deleteCookies("JSESSIONID");
+	
+		
+	}
 }
 
