@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import jakarta.validation.Valid;
+import jp.co.msscoop.app.common.SystemDateUtil;
 import jp.co.msscoop.app.dto.ReservableRoomInfo;
 import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.exception.UseCaseException;
@@ -42,37 +45,54 @@ public class ReservableSearchController {
 	 */
 	private final MessageSource messageSource;
 
+	
+	private final SystemDateUtil systemDateUtil; 
 	/**
 	 * 
 	 * @param service
 	 * @param messageSource
 	 */
-	public ReservableSearchController(MessageSource messageSource,ReservableSearchService service,ReservableSearchFormSession searchFormSession) {
+	public ReservableSearchController(MessageSource messageSource,ReservableSearchService service,ReservableSearchFormSession searchFormSession,SystemDateUtil systemDateUtil) {
 		this.service = service;
 		this.messageSource = messageSource;
 		this.searchFormSession = searchFormSession;
+		this.systemDateUtil =systemDateUtil;
 	}
 
 	
 	/**
 	 * 空室検索画面を表示
 	 * 
+	 * 
+	 * 
 	 * @return
 	 */
 	@GetMapping("")
 	public String index(Model model) {
 		
-		
+		//ReservableSearchFormの変数searchFormを宣言
+		//searchFormSession.getSearchFormを呼び出しし、戻り値をsearchFormに設定する。
 		ReservableSearchForm searchForm = searchFormSession.getSearchForm();
-		//一度も検索を実行していない場合、検索条件が空なのでインスタンス化
+		//searchFormがNULLかどうか（一度も検索を実行していない場合、getSearchFormはNULLを返す）条件判定する
 		if(searchForm == null) {
+			//searchFormがNULLの場合
+			//ReservableSearchFormをインスタンス化し、変数searchFormにセット
 			searchForm = new ReservableSearchForm();
-			searchForm.setInDoorBath(false);
+			
+			//searchForm.setInDoorBathに引数trueをセット（初期値は内風呂あり）
+			searchForm.setInDoorBath(true);
+			//searchForm.setSmokingに引数falseをセット（初期値は禁煙）
 			searchForm.setSmoking(false);
-			searchForm.setCheckin(LocalDate.now());
-			searchForm.setCheckout(LocalDate.now().plusDays(1));
+			
+			//デフォルトではチェックイン日付は明日、チェックアウト日付は明後日でカレンダーを初期化する
+			searchForm.setCheckin( systemDateUtil.today().plusDays(1) );
+			searchForm.setCheckout(systemDateUtil.today().plusDays(2));
 		}
+		
+		//model.addAttributeを呼び出し、キー名は『reservableSearchForm』、第二引数にsearchFormをセット
 		model.addAttribute("reservableSearchForm", searchForm);
+		
+		//"/reservable/reservableSearch"をリターンする
 		return "/reservable/reservableSearch";
 
 	}
@@ -95,20 +115,19 @@ public class ReservableSearchController {
 	 * @return
 	 */
 	@PostMapping(params = "execute")
-	public String search(ReservableSearchForm form, Model model) {
+	public String search(@Valid ReservableSearchForm form, BindingResult result, Model model) {
 		try {
+			
+			if(result.hasErrors()) {
+				return "/reservable/reservableSearch";
+			}
+			
 			List<ReservableRoomInfo> reservableRoomList = service.search(form.getCheckin(), form.getCheckout(),
 					form.isInDoorBath(), form.isSmoking());
 
-			if (reservableRoomList.isEmpty()) {
-				String errorMesage = messageSource.getMessage("bus.error.searchresultzero", null, Locale.JAPAN);
-				model.addAttribute("errormsg", errorMesage);
-				return "/reservable/reservableSearch";
-			}
+			
 			//次回検索に備えて検索条件をセッションに格納
 			searchFormSession.addSearchForm(form);
-			
-			
 			model.addAttribute("reservableRoomList", reservableRoomList);
 			return "/reservable/reservableSearchResult";
 		} catch (BusinessException e) {

@@ -6,12 +6,20 @@
 	    <!-- (2)body内で共通化したい部品をfragment化する -->
 	    <header th:replace="~{/common/header}"></header>
 		
+		
 		<span class="text-danger"
 					             th:if="${errormsg != null}"
 					             th:text="${errormsg}">
-					               authrize error </span>
+					               search error </span>
+		
+		
+		
+		
+								   
 		<main>
 			<form th:object="${reservableSearchForm}" th:action="@{/reservable/search}" method="post">
+				
+						
 			<table border="0">
 				<tr><td>チェックイン日<input type="date" th:field="*{checkin}"></td>
 					<td>～チェックアウト日<input type="date" th:field="*{checkout}"></td></tr>
