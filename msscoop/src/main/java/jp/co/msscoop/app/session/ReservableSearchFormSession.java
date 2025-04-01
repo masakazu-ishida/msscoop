@@ -6,6 +6,10 @@ import org.springframework.web.context.annotation.SessionScope;
 import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.form.ReservableSearchForm;
 
+/**
+ * 空室検索フォームを維持する、セッションスコープBean
+ * 
+ */
 @Component
 @SessionScope
 public class ReservableSearchFormSession {

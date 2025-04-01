@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
-
 /**
- * Bean定義ファイルの代わり。
+ * Bean定義ファイルの代わり。AP起動時に読み込まれる。
+ * 
  */
 @Configuration
 public class BeanConfiure {
@@ -20,13 +19,15 @@ public class BeanConfiure {
     String mode;
 	
 	/**
-	 * application.propertiesのboot.modeの値によって
-	 * 適切にインスタンス化して戻り値で返す
-	 * boot.modeの値がproduction：SystemDateUtilFormDevelopをnew演算子でインスタス化してリターン
-	 * boot.modeの値がdevelop：SystemDateUtilImplをnew演算子でインスタス化してリターン
-	 * いずれでもない場合、SystemDateUtilImplをnew演算子でインスタス化してリターン
+	 * [概要]<br>
+	 * メンバ変数modeの値によって、今日の日付を固定・システム日付を返す。<br><br>
+	 * [処理内容]<br>
+	 * 1.メンバ変数modeの値が"developかどうか条件判断"する<br>
+	 *   1.1 条件式が真の場合：SystemDateUtilFormDevelopをnew演算子でインスタス化してリターン<br>
+	 *   1.2 条件式が偽でかつproductの場合：SystemDateUtilImplをnew演算子でインスタス化してリターン<br>
+	 *   1.3 条件式が偽で上記いずれでもない場合、SystemDateUtilImplをnew演算子でインスタス化してリターン<br>
 	 * 
-	 * @return SystemDateUtilの実装クラスをリターン
+	 * @return SystemDateUtilの実装クラスをインスタンス化してリターン
 	 */
 	@Bean
 	SystemDateUtil getSystemDateUtil() {

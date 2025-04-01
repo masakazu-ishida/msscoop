@@ -34,6 +34,10 @@ public class ReserveRegisterController {
 	private final ReserveRegisterService reserveService;
 	
 	
+	/**
+	 * コンストラクタインジェクション
+	 * @param reserveService
+	 */
 	public ReserveRegisterController(ReserveRegisterService reserveService) {
 		
 		this.reserveService = reserveService;
@@ -42,16 +46,17 @@ public class ReserveRegisterController {
 	}
 	
 	/**
-	 * ■概要
-	 * ReserveRegisterFormをインスタンス化し、リターンする。
-	 * 
-	 * ■動きの説明
-	 * セッションにキー名"registerForm"でFormオブジェクトを設定する働きとなり、
-	 * これにより、確認画面→入力画面に戻ったときに、最初に入力された値を保持して
-	 * 予約入力を復元できる。
-	 * 
-	 * "@ModelAttribute("registerForm")"でキー名を指定しないと、
+	 * [概要]<br>
+	　　　　ReserveRegisterFormをインスタンス化し、リターンする。
+	 　　　セッションにキー名"registerForm"でFormオブジェクトを設定する働きとなり、
+	 *  これにより、確認画面→入力画面に戻ったときに、最初に入力された値を保持して
+	 *  予約入力情報を復元できる。
 	 * 確認画面から入力画面に戻るときにエラーになる。
+	 * 
+	 * [処理内容]<br>
+	 * 1.ReserveFormをインスタンス化して戻り値で返す。
+	 
+	 * 
 	 * @return
 	 */
 	@ModelAttribute("registerForm")
@@ -60,17 +65,28 @@ public class ReserveRegisterController {
 	}
 
 	/**
+	 * [概要]<br>
+	 * 空室予約入力画面をを表示。<br>
+	 * 
+	 * [処理内容]<br>
+	 * 1.
+	 * 2.
+	 * 
+	 * 
 	 * 
 	 * @param registerForm　セッションにキー名"registerForm"でFormオブジェクトを渡す。
-	 * @param result
+	 * @param result　
 	 * @param model
 	 * @return
 	 */
 	@PostMapping(params = "input")
 	public String input(@ModelAttribute("registerForm")ReserveForm registerForm , BindingResult result,  Model model) {
+		
+		//1. ReserveRegisterService.inputを呼び出す。引数にはReserveFormを指定する。
+		//　
 		reserveService.input(registerForm);
 		
-		//model.addAttribute("registerForm", registerForm);
+		//2.　"/reserve/register/input"を戻り値で返し、予約入力画面を表示する。
 		return "/reserve/register/input";
 	}
 	

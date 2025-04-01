@@ -7,10 +7,16 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * @Comoponentはつけない！BeanConfiureでapplitaion.propertiesが『boot.mode=develop』
- * の時にこのクラスを有効化する
+ * 『@Comoponent』はつけない！<br>
+ * 日付取得用クラス
+ * 
  */
 public class SystemDateUtilFormDevelop implements SystemDateUtil{
+	
+	/**
+	 BeanConfiureでapplitaion.propertiesが『boot.mode=develop』<br>
+	 * の時にこのクラスを有効化する。単体テスト用で日付は常に2025/01/05を返す
+	 */
 	@Override
 	public LocalDate today() {
 		// TODO 自動生成されたメソッド・スタブ
