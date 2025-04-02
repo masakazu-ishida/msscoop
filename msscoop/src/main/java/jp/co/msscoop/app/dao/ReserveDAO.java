@@ -12,7 +12,8 @@ import jp.co.msscoop.app.dto.Room;
 import jp.co.msscoop.app.dto.UserInfo;
 
 /**
- * 予約業務のDAO
+ * [概要]<br>
+ * 予約テーブルのDAO
  */
 @Mapper
 public interface ReserveDAO {

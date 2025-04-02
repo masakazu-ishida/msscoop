@@ -2,7 +2,10 @@ package jp.co.msscoop.app.exception;
 
 
 
-
+/**
+ * [概要]<br>
+ * ユースケース例外。業務例外の一種だが、ある機能を最初からやり直す場合にスローする。
+ */
 public class UseCaseException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

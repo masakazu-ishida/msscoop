@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import jp.co.msscoop.app.dao.UserInfoDAO;
 import jp.co.msscoop.app.dto.UserInfo;
 
-
+/**
+ * [概要]<br>
+ * 
+ * 
+ */
 @Service
 public class UserSharedServiceImpl implements UserSharedService {
 	private final UserInfoDAO dao;

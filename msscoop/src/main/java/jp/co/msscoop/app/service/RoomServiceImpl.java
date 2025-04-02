@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 import jp.co.msscoop.app.dao.RoomDAO;
 import jp.co.msscoop.app.dto.Room;
 
-
+/**
+ * [概要]<br>
+ * 
+ */
 @Service
 public class RoomServiceImpl implements RoomService {
 

@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
+ * [概要]<br>
  * SpringSecurityのユーザ情報に対応するDTO
  */
 public class UserDetailsImpl implements UserDetails{

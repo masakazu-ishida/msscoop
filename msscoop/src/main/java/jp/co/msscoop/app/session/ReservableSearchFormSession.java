@@ -7,7 +7,8 @@ import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.form.ReservableSearchForm;
 
 /**
- * 空室検索フォームを維持する、セッションスコープBean
+ * [概要]<br>
+ * 空室検索フォームを維持するセッションスコープBean
  * 
  */
 @Component

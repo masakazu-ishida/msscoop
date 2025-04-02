@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * [概要]<br>
  * ReservableRoomInfo（予約可能テーブル）の列に対応するDTO
  */
 @Data

@@ -16,6 +16,9 @@ import jp.co.msscoop.app.dao.ReservableRoomInfoDAO;
 import jp.co.msscoop.app.dto.ReservableRoomInfo;
 import jp.co.msscoop.app.exception.BusinessException;
 
+/**
+ * 
+ */
 @Service
 public class ReservableSearchServiceImpl implements ReservableSearchService {
 
@@ -64,7 +67,7 @@ public class ReservableSearchServiceImpl implements ReservableSearchService {
 		
 		
 		if(list.isEmpty()) {
-			String message = messageSource.getMessage("bus.error.searchresultzero", null, Locale.JAPAN);
+			String message = messageSource.getMessage("bus.error.searchresult_zero", null, Locale.JAPAN);
 			throw new BusinessException(message);
 		}
 		

@@ -22,15 +22,11 @@ import jp.co.msscoop.app.service.UserSharedService;
 
 
 /**
- * ■ログイン処理を行う
- * 
- * ■クラスレベルで宣言するアノテーション
- * @Controller
- * @RequestMapping("/login")
- * 
+ * [概要]<br>
+ * SpringSecurityがログイン処理を行うにあたり、ログイン画面を表示と、ログインフォームの初期化を行う
  */
 @Controller
-@RequestMapping("")
+@RequestMapping("/login")
 public class LoginController {
 
 	/**
@@ -38,32 +34,15 @@ public class LoginController {
 	 */
 	private final MessageSource messageSource;
 	
-	/*
-	 * UserSharedServiceインターフェースのオブジェクトをインジェクションする
-	 * */
-	private final UserSharedService service;
-	
-	/**
-	 * SessionScopeBeanとなる
-	 */
-	
 	
 	
 	/**
 	 * 
 	 * [概要]<br>
-	 * ログ出力用の引数情報を生成し、文字列で返す<br><br>
+	 * ログインフォームを初期化する<br><br>
 	 * [処理内容]<br>
-	 * 1.
-	 * 2.
-	 * 3.
-	 * 4.
-	 * 
-	 * 
-	 * 画面初期化時にLoginForm()をModelにaddAttributeする
-	 * ■メソッドレベルで宣言するアノテーション
-	 * @ModelAttribute
-	 * @return　LoginFormをインスタンス化して返す。初期値は不要
+	 * 1.LoginFormをインスタンス化して返す。初期値は不要
+	 * @return　LoginFormをインスタンス化して返す。
 	 */
 	@ModelAttribute
 	LoginForm setupForm() {
@@ -71,89 +50,39 @@ public class LoginController {
 	}
 	
 	/**
-	 * コンストラクタインジェクションを行うため、引数にインジェクションするインターフェースを指定し、メンバ変数にセットする
+	 * 
+	 * [概要]<br>
+	 * コンストラクタインジェクションを行う。
+	 * 
+	 * 
+	 * [処理内容]<br>
+	 * 1.MessageSourceを指定し、メンバ変数messageSourceにインジェクション
+	 
 	 * 
 	 * @param messageSource MessageSourceを渡す
 	 * @param service UserSharedServiceを渡す
 	 * @param sessionBean UserSessionを渡す
 	 */
-	public LoginController(MessageSource messageSource, UserSharedService service) {
+	public LoginController(MessageSource messageSource) {
 		this.messageSource = messageSource;
-		this.service = service;
+		
 		
 	}
 	
 	
 	/**
-	 * ■概要
+	 * [概要]<br>
 	 * ログイン画面を表示する
 	 * 
-	 * ■メソッドレベルで宣言するアノテーション
-	 * @GetMapping("")
-	 * 
-	 * ■ロジック詳細
-	 * ・"/common/login"を返す
+	 * [処理内容]<br>
+	 * 1. "/common/login"を返す
 	 * 
 	 * @return ログイン画面を表すパス"/common/login"を返す
 	 */
-	@GetMapping("/login")
+	@GetMapping("")
 	public String index() {
 		return "/common/login";
 	}
 	
-	/**
-	 * <p>
-	 * ■概要
-	 * ログインを実行する</br>
-	 * 
-	 * ■ロジック詳細</br>
-	 * ・result.hasErrorsで入力エラーが発生した場合</br>
-	 * 　ログイン画面に戻る</br>
-	 * ・インジェクションしたUserSharedService.authorizeで認証を行い、戻り値を取得</br>
-	 * ・authorize戻り値が非NULL（認証成功）</br>
-	 * 　SessionScopeBean.setLoginUserを呼び出し、UserInfoをセット。</br>
-	 * 　"redirect:/reservable/search"を返す</br>
-	 * 
-	 * ・authorize戻り値がNULL（認証失敗時）</br>
-	 * 　キー"bus.error.authorized"をmessage.propertiesから取得し、キー"errormsg"でModelにaddAttributeする</br>
-	 * 　View名"/common/login"を返す</br>
-	 * </p>
-	 * @param　form LoginFormを@Validatedをつけて指定
-	 * @param result BindingResultを指定
-	 * @param model Modelを指定
-	 * @return ログイン成功："redirect:/reservable/search"　ログイン失敗："/common/login"
-	 * 
-	 */
-	/*
-	@PostMapping("/loginProcess")
-	public String signIn(@Validated LoginForm form, BindingResult result, Model model) {
-		
-		//String型変数messageを宣言
-		
-		
-		//入力エラーが発生した場合ログイン画面に戻る
-		if(result.hasErrors()) {
-			//ログイン画面に戻る
-			return "/common/login"; 
-		}
-		//
-		UserInfo user = service.authorize(form.getUserId(), form.getPassword());
-		//
-		if(user == null) {
-			
-			String errorMessage = messageSource.getMessage("bus.error.authorized", null, Locale.JAPAN);
-			
-			model.addAttribute("errormsg", errorMessage);
-			
-			//ログイン画面に戻る
-			return "/common/login";
-		}
-		else {
-			
-			userSession.addLoginUser(user);
-			//model.addAttribute("userSession", userSession);
-			return "redirect:/reservable/search"; 
-		}
-	}
-	*/
+
 }

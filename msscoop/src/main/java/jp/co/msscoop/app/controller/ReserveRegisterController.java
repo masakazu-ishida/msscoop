@@ -22,6 +22,11 @@ import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.service.ReserveRegisterService;
 
 
+/**
+ * [概要]<br>
+ * 予約登録機能のコントローラ
+ * 
+ */
 @Controller
 @SessionAttributes("registerForm")
 @RequestMapping("/reserve/register")

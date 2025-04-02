@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * [概要]<br>
  * UserInfo（ユーザテーブル）の列に対応するDTO
  */
 @NoArgsConstructor

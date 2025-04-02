@@ -6,11 +6,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
+/**
+ * [概要]<br>
+ * 
+ */
 @Data
 public class ReserveForm {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate checkIn;
-	
 	private String roomId;
 	private String roomName;
 	private boolean inDoorBathRoom;

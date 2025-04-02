@@ -29,6 +29,7 @@ import jp.co.msscoop.app.session.ReservableSearchFormSession;
 
 
 /**
+ * [概要]<br>
  * 空室検索機能用コントローラ
  * 
  */

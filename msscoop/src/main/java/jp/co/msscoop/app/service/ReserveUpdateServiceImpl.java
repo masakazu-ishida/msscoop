@@ -9,7 +9,10 @@ import jp.co.msscoop.app.dao.ReserveDAO;
 import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.form.ReserveForm;
 
-
+/**
+ * [概要]<br>
+ * 
+ */
 @Service
 public class ReserveUpdateServiceImpl implements ReserveUpdateService {
 	

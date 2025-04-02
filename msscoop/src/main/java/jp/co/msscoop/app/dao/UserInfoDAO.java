@@ -8,6 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import jp.co.msscoop.app.dto.UserInfo;
 
 
+/**
+ * [概要]<br>
+ * ユーザテーブルのDAO
+ */
 @Mapper
 public interface UserInfoDAO {
 	/**

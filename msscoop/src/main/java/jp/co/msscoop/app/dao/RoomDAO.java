@@ -7,6 +7,10 @@ import org.apache.ibatis.annotations.Param;
 
 import jp.co.msscoop.app.dto.Room;
 
+/**
+ * [概要]<br>
+ * 部屋テーブルのDAO
+ */
 @Mapper
 public interface RoomDAO {
 	/**

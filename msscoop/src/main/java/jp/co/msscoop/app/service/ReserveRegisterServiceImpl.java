@@ -19,7 +19,10 @@ import jp.co.msscoop.app.dto.UserInfo;
 import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.form.ReserveForm;
 
-
+/**
+ * [概要]<br>
+ * 
+ */
 @Service
 public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 

@@ -9,7 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import jp.co.msscoop.app.dto.ReservableRoomInfo;
 
 /**
- * 空室検索業務用のDAO
+ * [概要]<br>
+ * 空室テーブルのDAO
  */
 @Mapper
 public interface ReservableRoomInfoDAO {

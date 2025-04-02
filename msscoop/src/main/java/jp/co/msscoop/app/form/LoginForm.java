@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * [概要]<br>
+ * 
+ */
 @Data
 public class LoginForm {
 	

@@ -10,6 +10,10 @@ import lombok.Data;
 import jp.co.msscoop.app.common.SystemDateUtil;
 import jp.co.msscoop.app.common.SystemDateUtilFormDevelop;
 
+/**
+ * [概要]<br>
+ * 
+ */
 @Data
 public class ReservableSearchForm {
 	
