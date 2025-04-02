@@ -18,6 +18,10 @@ public class ReservableSearchFormSession {
 	
 	private ReservableSearchForm searchForm;
 
+	/**
+	 * 空室検索フォームを取得
+	 * @return
+	 */
 	public ReservableSearchForm getSearchForm() {
 		return searchForm;
 	}
