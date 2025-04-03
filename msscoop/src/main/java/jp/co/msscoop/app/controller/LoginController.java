@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jp.co.msscoop.app.dto.UserInfo;
+
 import jp.co.msscoop.app.form.LoginForm;
-import jp.co.msscoop.app.service.UserSharedService;
 
 
 /**
@@ -29,12 +28,6 @@ import jp.co.msscoop.app.service.UserSharedService;
 @RequestMapping("/login")
 public class LoginController {
 
-	/**
-	 * MessageSourceインターフェースのオブジェクトをインジェクションする
-	 */
-	private final MessageSource messageSource;
-	
-	
 	
 	/**
 	 * 
@@ -49,26 +42,7 @@ public class LoginController {
 		return new LoginForm();
 	}
 	
-	/**
-	 * 
-	 * [概要]<br>
-	 * コンストラクタインジェクションを行う。
-	 * 
-	 * 
-	 * [処理内容]<br>
-	 * 1.MessageSourceを指定し、メンバ変数messageSourceにインジェクション
-	 
-	 * 
-	 * @param messageSource MessageSourceを渡す
-	 * @param service UserSharedServiceを渡す
-	 * @param sessionBean UserSessionを渡す
-	 */
-	public LoginController(MessageSource messageSource) {
-		this.messageSource = messageSource;
-		
-		
-	}
-	
+
 	
 	/**
 	 * [概要]<br>

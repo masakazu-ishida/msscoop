@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import jp.co.msscoop.app.common.EMailSender;
+
 import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.service.ReserveRegisterService;
 

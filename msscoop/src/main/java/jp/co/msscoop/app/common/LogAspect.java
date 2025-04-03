@@ -16,8 +16,8 @@ import org.apache.logging.log4j.Logger;
 /**
  *　Controllerのメソッドが呼ばれる度に、ログにメソッド名・引数・引数の値を出力するAOP
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class LogAspect {
 	
 	/**

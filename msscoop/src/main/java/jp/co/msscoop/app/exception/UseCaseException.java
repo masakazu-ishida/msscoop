@@ -8,6 +8,9 @@ package jp.co.msscoop.app.exception;
  */
 public class UseCaseException extends RuntimeException {
 
+	/**
+	 * シリアライズ時のバージョン番号
+	 */
 	private static final long serialVersionUID = 1L;
 	private String message;
 	

@@ -6,15 +6,18 @@ import java.time.LocalDate;
 //アノテーション
 
 /**
- * 『@Comoponent』はつけない！<br>
- * 日付取得用クラス
- * 
+ * 【概要】
+ * 日付取得用クラス。システム日付から取得する。 『@Comoponent』はつけない！<br>
+ *
  */
 public class SystemDateUtilImpl implements SystemDateUtil {
 
 	/**
-	 BeanConfiureでapplitaion.propertiesが『boot.mode=product』<br>
-	 * の時にこのクラスを有効化する。本番用で日付は常にOSのシステム日付を返す
+	 * 
+	 * 【概要】
+	 * システム日付を取得し、戻り値で返す
+	 * 
+	 * @return システム日付を返す
 	 */
 	@Override
 	public LocalDate today() {

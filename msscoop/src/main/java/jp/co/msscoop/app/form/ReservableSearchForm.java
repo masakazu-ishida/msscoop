@@ -17,6 +17,11 @@ import jp.co.msscoop.app.common.SystemDateUtilFormDevelop;
 @Data
 public class ReservableSearchForm {
 	
+
+	/**
+	 * シリアライズ時のバージョン番号
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

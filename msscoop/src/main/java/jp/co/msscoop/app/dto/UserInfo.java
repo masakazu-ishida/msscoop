@@ -1,5 +1,7 @@
 package jp.co.msscoop.app.dto;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,8 +11,12 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class UserInfo {
-	
+public class UserInfo  implements Serializable {
+	/**
+	 * シリアライズ時のバージョン番号
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String userId;
 	private String password;
 	private String role;

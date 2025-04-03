@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import jp.co.msscoop.app.dao.UserInfoDAO;
 import jp.co.msscoop.app.dto.UserDetailsImpl;
 import jp.co.msscoop.app.dto.UserInfo;
-import jp.co.msscoop.app.service.UserSharedService;
 
 
 /**

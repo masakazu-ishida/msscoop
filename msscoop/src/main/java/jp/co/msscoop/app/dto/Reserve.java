@@ -1,5 +1,6 @@
 package jp.co.msscoop.app.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import lombok.Data;
@@ -11,7 +12,12 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Reserve {
+public class Reserve  implements Serializable {
+	/**
+	 * シリアライズ時のバージョン番号
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String reserveId;
 	private String roomId;
 	private String userId;

@@ -1,5 +1,7 @@
 package jp.co.msscoop.app.dto;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +11,12 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Room {
+public class Room  implements Serializable {
+	/**
+	 * シリアライズ時のバージョン番号
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String roomId;
 	private String roomName;
 	private boolean inDoorBathRoom;
