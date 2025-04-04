@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * [概要]<br>
  * Bean定義ファイルの代わり。AP起動時に読み込まれる。
  * 
  */

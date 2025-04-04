@@ -11,11 +11,9 @@ import jp.co.msscoop.app.dto.UserInfo;
 
 
 /**
- * 
- * 
- * 
- * SpringSecuityの認証時に呼び出され、画面から入力されたユーザＩＤから
- * ユーザ情報を返却する
+ * [概要]<br>
+ * SpringSecuityの認証プロセスの一部で時に呼び出される。画面から入力されたユーザＩＤから
+ * ユーザ情報をSpringSecurityに返す。
  * 
  */
 @Service
@@ -38,6 +36,14 @@ public class LocalUserDetailServiceIml implements UserDetailsService {
 	/**
 	 * ユーザIDを元にDB問い合わせを行い、UserDetailsインターフェースの実装クラスを返す
 	 */
+	
+	/**
+	 * [概要]
+	 * 予約登録に必要なオブジェクトのインターフェースをコンストラクタインジェクションする
+	 * 
+	 * 
+	 */
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO 自動生成されたメソッド・スタブ
