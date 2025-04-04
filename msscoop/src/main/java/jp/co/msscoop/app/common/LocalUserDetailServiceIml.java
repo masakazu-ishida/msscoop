@@ -25,6 +25,10 @@ public class LocalUserDetailServiceIml implements UserDetailsService {
 	private final UserInfoDAO userInfoDAO;
 	
 	/**
+	 * 
+	 * [概要]
+	 * ユーザ情報予約登録に必要なオブジェクトのインターフェースをコンストラクタインジェクションする
+	 * 
 	 * コンストラクタインジェクションで初期化
 	 * 
 	 * @param userInfoDAO
@@ -34,13 +38,13 @@ public class LocalUserDetailServiceIml implements UserDetailsService {
 	}
 	
 	/**
-	 * ユーザIDを元にDB問い合わせを行い、UserDetailsインターフェースの実装クラスを返す
+	 * 
 	 */
 	
 	/**
 	 * [概要]
 	 * 予約登録に必要なオブジェクトのインターフェースをコンストラクタインジェクションする
-	 * 
+	 * ユーザIDを元にDB問い合わせを行い、UserDetailsインターフェースの実装クラスを返す
 	 * 
 	 */
 	
