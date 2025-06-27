@@ -3,6 +3,37 @@
 <mapper namespace="jp.co.msscoop.app.dao.ReserveDAO">
 	
 	
+	<resultMap id="reservedInfo" type="jp.co.msscoop.app.dto.Reserve">
+		<!--複合キーの場合idタグを複数記述-->
+		<id property="reserveId" column="reserve_id"/>
+		<result property="roomId" column="room_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="checkIn" column="checkIn"/>
+		<result property="checkOut" column="checkOut"/>
+		<result property="stayNumberOfPeople" column="stay_number_of_people"/>
+		<result property="meal" column="meal"/>
+		<result property="amount" column="amount"/>
+		<result property="cancel" column="cancel"/>
+		<association property="room" resultMap="roomInfo" />
+		<association property="user" resultMap="userInfo" />
+	</resultMap>
+	<resultMap id="roomInfo" type="jp.co.msscoop.app.dto.Room">
+		<id property="roomId" column="room_id"/>
+		<result property="roomName" column="room_name"/>
+		<result property="inDoorBathRoom" column="inDoorBathRoom"/>
+		<result property="price" column="price"/>
+		<result property="smoking" column="smoking"/>
+		<result property="roomImage" column="room_image"/>
+	</resultMap>
+	
+	<resultMap id="userInfo" type="jp.co.msscoop.app.dto.UserInfo">
+		<id property="userId" column="user_id"/>
+		<result property="password" column="password"/>
+		<result property="role" column="role"/>
+		<result property="fullName" column="full_name"/>
+		<result property="email" column="email"/>
+		
+	</resultMap>
 	
 	<!-- チェックイン日のe_reserveの件数＋１をreserve_idとする。tocharで変換すると
 	何故か先頭にスペースが入るのでreplaceで消している
@@ -14,20 +45,71 @@
 
 	</select>
 	
-	<select id="findById" resultType="jp.co.msscoop.app.dto.Reserve">
+	
+	<select id="search" resultMap="reservedInfo"> 	
+	
+	<![CDATA[ 
+			
 		SELECT rsv.reserve_id, 
-				rsv.room_id, 
-				rsv.checkin, 
-				rsv.checkout, 
-				rsv.stay_number_of_people, 
-				rsv.meal, 
-				rsv.amount, 
-				rsv.user_id,
-       			rm.room_name
-		FROM 
-			public.e_reserve rsv 
-		INNER JOIN r_user usr ON usr.user_id = rsv.user_id
-		INNER JOIN r_room rm ON rsv.room_id = rm.room_id
+			rsv.room_id, 
+			rsv.checkin, 
+			rsv.checkout, 
+			rsv.stay_number_of_people, 
+			rsv.meal, 
+			rsv.amount, 
+			rsv.user_id, 
+			rsv.cancel,
+			rm.room_name, 
+			rm.price, 
+			rm.room_image, 
+			rm.smoking, 
+			rm.indoor_bathroom,
+			usr.user_id,
+			usr.password,
+			usr.full_name,
+			usr.role,
+			usr.email
+		FROM public.e_reserve rsv inner join 
+			public.r_room rm
+		ON rm.room_id = rsv.room_id
+
+        inner join r_user usr 
+		ON rsv.user_id = usr.user_id
+		where rsv.user_id = #{userId} and  rsv.checkin >= #{tomorrow} order by rsv.checkin	
+			
+			
+			
+		]]>
+	</select>
+	
+	
+	
+	<select id="findById" resultMap="reservedInfo">
+		SELECT rsv.reserve_id, 
+			rsv.room_id, 
+			rsv.checkin, 
+			rsv.checkout, 
+			rsv.stay_number_of_people, 
+			rsv.meal, 
+			rsv.amount, 
+			rsv.user_id, 
+			rsv.cancel,
+			rm.room_name, 
+			rm.price, 
+			rm.room_image, 
+			rm.smoking, 
+			rm.indoor_bathroom,
+			usr.user_id,
+			usr.password,
+			usr.full_name,
+			usr.role,
+			usr.email
+		FROM public.e_reserve rsv inner join 
+			public.r_room rm
+		ON rm.room_id = rsv.room_id
+
+        inner join r_user usr 
+		ON rsv.user_id = usr.user_id
 		WHERE rsv.reserve_id = #{reserveId}
 	</select>
 	
@@ -53,6 +135,20 @@
 			#{amount},
 			#{cancel});
 	</insert>
+	
+	<update id="update" parameterType="jp.co.msscoop.app.dto.Reserve">
+		UPDATE public.e_reserve 
+			SET 
+			user_id = #{userId}, 
+			room_id = #{roomId}, 
+			checkIn = #{checkIn}, 
+			checkOut = #{checkOut}, 
+			stay_number_of_people = #{stayNumberOfPeople}, 
+			meal = #{meal}, 
+			amount = #{amount},
+			cancel = #{cancel}
+		WHERE reserve_id = #{reserveId};
+	</update>
 	
 	
 	

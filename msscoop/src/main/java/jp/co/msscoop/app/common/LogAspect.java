@@ -70,7 +70,12 @@ public class LogAspect {
 
 	/**
 	 * [概要]<br>
-	 * ログ出力用の引数情報を生成し、文字列で返す<br><br>
+	 * ログ出力用の引数情報(呼ばれたメソッドの引数情報)を生成し、文字列で返す<br>
+	 * 出力形式の例
+	 * 　　第１引数　型：String型　値：Hello
+	 * 　　第２引数　型：Integer型　値：123
+	 * 
+	 * <br>
 	 * [処理内容]<br>
 	 * 1.String型変数paramStringを宣言<br>
 	 * 2.Object型の配列型変数argsを宣言<br>
@@ -78,6 +83,7 @@ public class LogAspect {
 	 * 4.argsの要素数分、ループを実行する<br>
 	 *  4.1 argsの添え字にループカウンタを指定し、引数情報をjava.lang.Object型で取得し、変数paramに設定<br>
 	 *  4.2 param.getClass().toString()で引数の型名を取得し、param.toString()で引数の値を取り出し、これを文字列連結する。<br>
+	 *  4.3 出力形式のように出力するにはString.formatを使用する。例：String.format("第%d引数 ", paramNumber)
 	 *  4.3 4.2で文字列連結した結果を、変数paramStringに+=で追加する<br>
 	 * 5.paramStringを戻り値で返す<br>
 	 * @param jp メソッド・引数情報を表す

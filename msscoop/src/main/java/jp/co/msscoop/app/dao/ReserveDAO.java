@@ -3,6 +3,7 @@ package jp.co.msscoop.app.dao;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,6 +18,24 @@ import jp.co.msscoop.app.dto.UserInfo;
  */
 @Mapper
 public interface ReserveDAO {
+	
+	
+	
+	
+	
+	/**
+	 * [概要]<br>
+	 * ユーザIDと今日のチェックインを指定して、予約情報のリスト取得する<br>
+	 * 予約検索上は今日の情報もヒットさせるが、当日キャンセルはなしにする。
+	 * 
+	 * 
+	 * @param userId
+	 * @param tomorrow
+	 * @return
+	 */
+	public List<Reserve> search(@Param("userId")String userId, @Param("tomorrow")LocalDate tomorrow);
+	
+	
 	
 	/**
 	 * [概要]<br>
@@ -60,7 +79,7 @@ public interface ReserveDAO {
 	
 	/**
 	 * [概要]<br>
-	 * 予約新規登録時を実行する<br>
+	 * 予約新規登録を実行する<br>
 	 * [処理内容]<br>
 	 * SQLの組み立てかた　INSERTのvalue区に以下を指定<br>
 	 * 　1. reserveId・・・予約IDを指定
@@ -78,5 +97,28 @@ public interface ReserveDAO {
 	 * @return 登録に成功した場合１を、登録されなかった場合は０を返す。
 	 */
 	public int  insert(Reserve reserve);
+	
+	
+	
+	/**
+	 * [概要]<br>
+	 * 予約変更を実行する<br>
+	 * [処理内容]<br>
+	 * SQLの組み立てかた　UPDATEのvalue区に以下を指定<br>
+	 * 　1. reserveId・・・予約IDを指定
+	    2. roomId・・・部屋ID
+	    3. userId・・・ログインユーザID
+		4. checkIn・・・チェックイン日付
+		5. checkOut・・・チェックアウト日付
+		6. stayNumberOfPeople・・・宿泊人数
+		7. meal・・・食事あり・なし
+	    8. amount・・・宿泊合計
+		9. cancel・・・キャンセルかどうか（予約の場合false）
+	 
+	 * @param reserve 登録内容を格納したReserve
+	 * @throws DataAccessExceptionまたはSQLExceptionをスロー
+	 * @return 登録に成功した場合１を、登録されなかった場合は０を返す。
+	 */
+	public int  update(Reserve reserve);
 
 }

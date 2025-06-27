@@ -34,6 +34,7 @@ import jp.co.msscoop.app.session.ReservableSearchFormSession;
  * 
  */
 @Controller
+@SessionAttributes("reservableSearchForm")
 @RequestMapping("/reservable/search")
 public class ReservableSearchController {
 	/**
@@ -43,7 +44,7 @@ public class ReservableSearchController {
 	
 	
 	
-	private final ReservableSearchFormSession searchFormSession;
+	//private final ReservableSearchFormSession searchFormSession;
 
 	/**
 	 * 
@@ -57,14 +58,30 @@ public class ReservableSearchController {
 	 * @param service
 	 * @param messageSource
 	 */
-	public ReservableSearchController(MessageSource messageSource,ReservableSearchService service,ReservableSearchFormSession searchFormSession,SystemDateUtil systemDateUtil) {
+	public ReservableSearchController(MessageSource messageSource,ReservableSearchService service,/*ReservableSearchFormSession searchFormSession,*/SystemDateUtil systemDateUtil) {
 		this.service = service;
 		this.messageSource = messageSource;
-		this.searchFormSession = searchFormSession;
+		//this.searchFormSession = searchFormSession;
 		this.systemDateUtil =systemDateUtil;
 	}
 
 	
+	@ModelAttribute("reservableSearchForm")
+	public ReservableSearchForm setupForm() {
+		ReservableSearchForm searchForm = new ReservableSearchForm();
+		
+		//searchForm.setInDoorBathに引数trueをセット（初期値は内ｗ風呂あり）
+		searchForm.setInDoorBath(true);
+		//searchForm.setSmokingに引数falseをセット（初期値は禁煙）
+		searchForm.setSmoking(false);
+		
+		//デフォルトではチェックイン日付は明日、チェックアウト日付は明後日でカレンダーを初期化する
+		searchForm.setCheckin( systemDateUtil.today().plusDays(1) );
+		searchForm.setCheckout(systemDateUtil.today().plusDays(2));
+		
+		return searchForm;
+		
+	}
 	/**
 	 * 
 	 * [概要]<br>
@@ -88,42 +105,47 @@ public class ReservableSearchController {
 	 * @return "/reservable/reservableSearch"を返す
 	 */
 	@GetMapping("")
-	public String index(Model model) {
+	public ModelAndView index() {
 		
 		//ReservableSearchFormの変数searchFormを宣言
 		//searchFormSession.getSearchFormを呼び出しし、戻り値をsearchFormに設定する。
-		ReservableSearchForm searchForm = searchFormSession.getSearchForm();
+		//ReservableSearchForm searchForm = searchFormSession.getSearchForm();
 		//searchFormがNULLかどうか（一度も検索を実行していない場合、getSearchFormはNULLを返す）条件判定する
-		if(searchForm == null) {
-			//searchFormがNULLの場合
-			//ReservableSearchFormをインスタンス化し、変数searchFormにセット
-			searchForm = new ReservableSearchForm();
-			
-			//searchForm.setInDoorBathに引数trueをセット（初期値は内ｗ風呂あり）
-			searchForm.setInDoorBath(true);
-			//searchForm.setSmokingに引数falseをセット（初期値は禁煙）
-			searchForm.setSmoking(false);
-			
-			//デフォルトではチェックイン日付は明日、チェックアウト日付は明後日でカレンダーを初期化する
-			searchForm.setCheckin( systemDateUtil.today().plusDays(1) );
-			searchForm.setCheckout(systemDateUtil.today().plusDays(2));
-		}
+//		if(searchForm == null) {
+//			//searchFormがNULLの場合
+//			//ReservableSearchFormをインスタンス化し、変数searchFormにセット
+//			searchForm = new ReservableSearchForm();
+//			
+//			//searchForm.setInDoorBathに引数trueをセット（初期値は内ｗ風呂あり）
+//			searchForm.setInDoorBath(true);
+//			//searchForm.setSmokingに引数falseをセット（初期値は禁煙）
+//			searchForm.setSmoking(false);
+//			
+//			//デフォルトではチェックイン日付は明日、チェックアウト日付は明後日でカレンダーを初期化する
+//			searchForm.setCheckin( systemDateUtil.today().plusDays(1) );
+//			searchForm.setCheckout(systemDateUtil.today().plusDays(2));
+//		}
+		
+		ModelAndView mView = new ModelAndView();
+		mView.setViewName("/reservable/reservableSearch");
 		
 		//model.addAttributeを呼び出し、キー名は『reservableSearchForm』、第二引数にsearchFormをセット
-		model.addAttribute("reservableSearchForm", searchForm);
+		//model.addAttribute("reservableSearchForm", searchForm);
 		
 		//"/reservable/reservableSearch"をリターンする
-		return "/reservable/reservableSearch";
+		//return "/reservable/reservableSearch";
+		
+		return mView;
 
 	}
 	
-
+/*
 	@PostMapping("")
 	public String index2(Model model) {
 		
 		return index(model);
 
-	}
+	}*/
 	
 	
 	
@@ -144,13 +166,17 @@ public class ReservableSearchController {
 	 * @return
 	 */
 	@PostMapping(params = "execute")
-	public String search(@Valid ReservableSearchForm form, BindingResult result, Model model) {
+	public ModelAndView search(@Valid ReservableSearchForm form, BindingResult result, Model model) {
+		ModelAndView mView = new ModelAndView();
+		mView.setViewName("/reservable/reservableSearchResult");
 		try {
+			
 			
 			//1.空室検索フォームの入力チェックを実行する
 			if(result.hasErrors()) {
 				//1.1もしエラーがあれば、"/reservable/reservableSearch"を返し、空室検索画面に戻る
-				return "/reservable/reservableSearch";
+				mView.setViewName("/reservable/reservableSearch");
+				return mView;
 			}
 			
 			//2.ReservableSearchServiceのsearchメソッドを呼び出し、空室検索を実行する。<br>
@@ -160,21 +186,29 @@ public class ReservableSearchController {
 
 			
 			//3.ReservableSearchFormSession.addSearchFormを呼び出し、次回検索に備えて検索条件フォームをセッションに格納。
-			searchFormSession.addSearchForm(form);
+			//searchFormSession.addSearchForm(form);
+			
+			
+			
+			
+			mView.addObject("reservableRoomList", reservableRoomList);
 			
 			//4.Model.addAttributeを呼び出す。第一引数にキー"reservableRoomList"を指定し、第二引数に空室検索結果を指定
-			model.addAttribute("reservableRoomList", reservableRoomList);
+			//model.addAttribute("reservableRoomList", reservableRoomList);
+			
+			return mView;
 			
 			//5."/reservable/reservableSearchResult"を返す
-			return "/reservable/reservableSearchResult";
+			//return "/reservable/reservableSearchResult";
 		} catch (BusinessException e) {
 			//6.catchブロックを作成。引数にはBusinessExceptionを指定
 			
 			//7.例外ハンドラを実行。Model.addAttributeを呼び出す。第一引数にキー"errormsg"を指定し、第二引数にBusinessException.getMessageを呼び出す
-			model.addAttribute("errormsg", e.getMessage());
+			mView.addObject("errormsg", e.getMessage());
 
 			//8. リクエストハンドラメソッドでView名を返すのと同じ
-			return "/reservable/reservableSearch";
+			mView.setViewName("/reservable/reservableSearch");
+			return mView;
 		}
 	}
 

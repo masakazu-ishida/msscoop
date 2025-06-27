@@ -20,6 +20,7 @@ public class ReserveForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private String reserveId;
 	private LocalDate checkIn;
 	private String roomId;
 	private String roomName;

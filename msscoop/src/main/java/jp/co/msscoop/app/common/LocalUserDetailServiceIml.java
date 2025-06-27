@@ -3,6 +3,7 @@ package jp.co.msscoop.app.common;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jp.co.msscoop.app.dao.UserInfoDAO;
@@ -13,7 +14,8 @@ import jp.co.msscoop.app.dto.UserInfo;
 /**
  * [概要]<br>
  * SpringSecuityの認証プロセスの一部で時に呼び出される。画面から入力されたユーザＩＤから
- * ユーザ情報をSpringSecurityに返す。
+ * ユーザ情報(ユーザID・ユーザ名・ロール・パスワード)をSpringSecurityに返す。
+ * 認証処理自体はSpringSecurityにて担当する。
  * 
  */
 @Service
@@ -23,6 +25,8 @@ public class LocalUserDetailServiceIml implements UserDetailsService {
 	 * ユーザ情報にアクセスするDAO
 	 */
 	private final UserInfoDAO userInfoDAO;
+	
+	
 	
 	/**
 	 * 

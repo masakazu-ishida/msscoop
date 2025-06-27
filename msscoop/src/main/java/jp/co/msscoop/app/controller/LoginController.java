@@ -22,7 +22,7 @@ import jp.co.msscoop.app.form.LoginForm;
 
 /**
  * [概要]<br>
- * SpringSecurityがログイン処理を行うにあたり、ログイン画面を表示と、ログインフォームの初期化を行う
+ * SpringSecurityがログイン処理を行うにあたり、ログイン画面を表示と、ログインフォームオブジェクトの初期化を行う
  */
 @Controller
 @RequestMapping("/login")

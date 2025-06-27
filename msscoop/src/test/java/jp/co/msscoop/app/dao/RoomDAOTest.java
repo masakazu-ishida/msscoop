@@ -25,6 +25,7 @@ public class RoomDAOTest {
 	@Test
 	@Sql("/sqls/user_init.sql")
 	public void test1() {
+		
 		Room room = dao.findById("202501050001");
 		
 		

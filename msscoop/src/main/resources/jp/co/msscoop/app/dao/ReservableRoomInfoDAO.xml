@@ -44,6 +44,7 @@
 			AND r_reservavle_room_info.businessday = e_reserve.checkin
 			WHERE 
 				reserve_id is  NULL
+				AND e_reserve.cancel = '0'
 			) reservable_info
 		ON reservable_info.room_id = r_room.room_id
 		WHERE 

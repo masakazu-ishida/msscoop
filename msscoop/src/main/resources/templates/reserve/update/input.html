@@ -6,7 +6,7 @@
 	    <header th:replace="~{/common/header}"></header>
 		<main>
 			<h2>予約画面</h2>
-			<form th:action="@{/reserve/update}" th:object="${registerForm}"  method="post">
+			<form th:action="@{/reserve/update}" th:object="${updateForm}"  method="post">
 				<table>
 					
 					<tr><td>日付</td><td th:text="*{ #temporals.format(checkIn, 'yyyy-MM-dd')} "></tr>
@@ -14,16 +14,16 @@
 					<tr><td></td><td><img th:src="@{*{roomImage}}"/></td></tr>
 					<tr><td>内風呂</td><td th:text="*{inDoorBathRoom == false } ? 'なし' : 'あり'"></td> </tr>
 					<tr><td>喫煙</td><td th:text="*{smoking == false} ? '禁煙': '喫煙OK'"></td> </tr>
-					<tr><td>1名1泊 </td><td th:text="${#numbers.formatInteger(registerForm.price, 3, 'COMMA') + '円'}"></td> </tr>
-					
+					<tr><td>1人1泊 </td><td th:text="*{#numbers.formatInteger(price, 3, 'COMMA') + '円'}"></td> </tr>
+					<tr><td>合計金額 </td><td th:text="*{#numbers.formatInteger(amount, 3, 'COMMA') + '円'}"></td> </tr>
 					
 					<tr><td>宿泊人数</td>
 						<td> 
 							<select th:field="*{stayNumberOfPeople}">
-								<option th:value="1">1人</option>
-								<option th:value="2" th:selected="2">2人</option>
-								<option th:value="3">3人</option>
-								<option th:value="4">4人</option>			
+								<option th:value="1" th:selected="${stayNumberOfPeople == 1}">1人</option>
+								<option th:value="2" th:selected="${stayNumberOfPeople == 2}">2人</option>
+								<option th:value="3" th:selected="${stayNumberOfPeople == 3}">3人</option>
+								<option th:value="4" th:selected="${stayNumberOfPeople == 4}">4人</option>			
 							</select>   
 						</td>
 					</tr>
@@ -31,8 +31,8 @@
 						<td>食事</td>
 						<td> 
 							<select th:field="*{meal}">
-								<option th:value="true" th:selected="true">あり</option>
-								<option th:value="false">なし</option>			
+								<option th:value="true" th:selected="${meal == true}">あり</option>
+								<option th:value="false"th:selected="${meal == true}">なし</option>			
 							</select>   
 						</td>
 					</tr>
