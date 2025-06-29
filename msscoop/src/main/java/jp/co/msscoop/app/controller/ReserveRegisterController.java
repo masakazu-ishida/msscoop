@@ -85,14 +85,17 @@ public class ReserveRegisterController {
 	 * @return
 	 */
 	@PostMapping(params = "input")
-	public String input(@ModelAttribute("registerForm")ReserveForm registerForm , BindingResult result,  Model model) {
+	public ModelAndView input(@ModelAttribute("registerForm")ReserveForm registerForm , BindingResult result) {
 		
 		//1. ReserveRegisterService.inputを呼び出す。引数にはReserveFormを指定する。
 		//　
 		reserveService.input(registerForm);
 		
 		//2.　"/reserve/register/input"を戻り値で返し、予約入力画面を表示する。
-		return "/reserve/register/input";
+		
+		ModelAndView mvw = new ModelAndView();
+		mvw.setViewName("/reserve/register/input");
+		return mvw;
 	}
 	
 	/**
@@ -103,17 +106,22 @@ public class ReserveRegisterController {
 	 * @return
 	 */
 	@PostMapping(params = "confirm")
-	public String confirm(@ModelAttribute("registerForm") ReserveForm registerForm, Model model) {
+	public ModelAndView confirm(@ModelAttribute("registerForm") ReserveForm registerForm) {
 		
 		reserveService.confirm(registerForm);
 		
-		//
-		//model.addAttribute("registerForm", registerForm);
-		return "/reserve/register/confirm";
+		
+		
+		
+		ModelAndView mvw = new ModelAndView();
+		mvw.setViewName("/reserve/register/confirm");
+		return mvw;
+		
+		
 	}
 	
 	@PostMapping(params = "commit")
-	public String commit(@ModelAttribute("registerForm") ReserveForm registerForm,
+	public ModelAndView commit(@ModelAttribute("registerForm") ReserveForm registerForm,
 			@AuthenticationPrincipal UserDetailsImpl info,
 			RedirectAttributes redirectAttr) {
 		
@@ -125,7 +133,9 @@ public class ReserveRegisterController {
 		redirectAttr.addFlashAttribute("reserveId", id);
 		
 		//完了画面に遷移するcompleteメソッドにリダイレクトする。直接完了画面に遷移しないこと
-		return "redirect:/reserve/register?complete";
+		ModelAndView mvw = new ModelAndView();
+		mvw.setViewName("redirect:/reserve/register?complete");
+		return mvw;	
 	}
 	
 	/**
@@ -140,7 +150,7 @@ public class ReserveRegisterController {
 	 * @return 完了画面"/reserve/register/complete"を返す
 	 */
 	@GetMapping(params = "complete")
-	public String complete(Model model, @ModelAttribute("reserveId") String reserveId, SessionStatus status) {
+	public ModelAndView complete(Model model, @ModelAttribute("reserveId") String reserveId, SessionStatus status) {
 		
 		
 		
@@ -152,7 +162,10 @@ public class ReserveRegisterController {
 		status.setComplete();
 		
 		//完了画面に遷移する
-		return "/reserve/register/complete";
+		ModelAndView mvw = new ModelAndView();
+		mvw.setViewName("/reserve/register/complete");
+		return mvw;
+		
 	}
 	
 	//各リクエストハンドラメソッドは処理に失敗して前に戻る処理しか書かない。

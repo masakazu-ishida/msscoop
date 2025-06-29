@@ -7,7 +7,9 @@
     <nav class="header-list">
         <ul >
             <li>
+				<div>
                 <a th:href="@{/reservable/search}">空室検索</a>
+				</div>
             </li>
   
             <li>
@@ -23,7 +25,7 @@
             </li>
 			
 			<li>
-				<div class="navbar-text" th:if="${#authorization.expression('isAuthenticated()')}">
+				<div th:if="${#authorization.expression('isAuthenticated()')}">
 				        ようこそ <span sec:authentication="principal.fullName"></span> さん
 				</div>	 
            </li>

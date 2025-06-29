@@ -37,7 +37,7 @@ CREATE TABLE public.e_reserve (
     meal boolean,
     amount integer,
     user_id character varying,
-    cancel character varying
+    cancel boolean
 );
 
 

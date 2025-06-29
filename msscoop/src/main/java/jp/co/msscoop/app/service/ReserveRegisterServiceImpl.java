@@ -25,6 +25,7 @@ import jp.co.msscoop.app.form.ReserveForm;
  * [概要]<br>
  * 予約登録機能に対するサービスインターフェース実装クラス
  */
+@Transactional
 @Service
 public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 
@@ -116,7 +117,7 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 		reserve.setUserId(userId);
 		
 		//reserve.setCancelを呼び出し、引数に０を引き渡す
-		reserve.setCancel("0");
+		reserve.setCancel(false);
 		
 		
 		

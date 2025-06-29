@@ -35,15 +35,18 @@
 		
 	</resultMap>
 	
-	<!-- チェックイン日のe_reserveの件数＋１をreserve_idとする。tocharで変換すると
-	何故か先頭にスペースが入るのでreplaceで消している
+	<!-- 当日の日付＋シーケンスIDを４桁ゼロ埋めで取得
 	このメソッドは必ずトランザクションで排他ロックを掛けてから呼び出すこと！　-->
 	<select id="findNewId" resultType="string">
-		SELECT  replace(cast(#{checkIn} as character(10)), '-','')
-	       || replace( to_char(COUNT(reserve_id) + 1, '0000'), ' ','')  as reserve_id 
-	    FROM e_reserve where checkin = #{checkIn}
+		
+		SELECT  replace(cast(current_date as character(10)), '-','')
+			       || replace( to_char((select nextval('SEQ_RESERVE_ID') as seq), '0000'), ' ','')  
+			       as reserve_id FOR UPDATE
+
 
 	</select>
+	
+	
 	
 	
 	<select id="search" resultMap="reservedInfo"> 	

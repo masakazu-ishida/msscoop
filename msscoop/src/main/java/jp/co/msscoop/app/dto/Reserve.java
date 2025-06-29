@@ -26,7 +26,7 @@ public class Reserve  implements Serializable {
 	private int stayNumberOfPeople;
 	private boolean meal;
 	private int amount;
-	private String cancel;
+	private boolean cancel;
 	private UserInfo user;
 	private Room room;
 	

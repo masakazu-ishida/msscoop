@@ -17,6 +17,7 @@ import jp.co.msscoop.app.form.ReserveForm;
  * [概要]<br>
  * 予約変更機能に対するサービスインターフェース実装クラス
  */
+@Transactional
 @Service
 public class ReserveUpdateServiceImpl implements ReserveUpdateService {
 	
@@ -73,7 +74,7 @@ public class ReserveUpdateServiceImpl implements ReserveUpdateService {
 		return updateForm;
 	}
 
-	@Transactional
+	
 	@Override
 	public int commit(ReserveForm updateForm) {
 		

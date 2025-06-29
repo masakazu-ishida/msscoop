@@ -1,6 +1,7 @@
 package jp.co.msscoop.app.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.msscoop.app.dao.RoomDAO;
 import jp.co.msscoop.app.dto.Room;
@@ -10,6 +11,7 @@ import jp.co.msscoop.app.dto.Room;
  * 部屋管理機能に対するサービスインターフェース実装クラス
  * 
  */
+
 @Service
 public class RoomServiceImpl implements RoomService {
 

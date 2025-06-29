@@ -23,35 +23,29 @@
 	<select id="search" resultMap="reservableRoomInfo">
 	<![CDATA[ 
 		SELECT 
-			r_room.room_id as roomId,
-			r_room.room_name as roomName,
-			r_room.indoor_bathroom as inDoorBathRoom,
-			r_room.price,
-			r_room.smoking,
+			r_room.room_id as roomId, 
+			r_room.room_name as roomName, 
+			r_room.indoor_bathroom as inDoorBathRoom, 
+			r_room.price, 
+			r_room.smoking, 
 			r_room.room_image as roomImage,
-			reservable_info.businessday
+			reservable_info.cancel, 
+			reservable_info.businessday 
 		FROM 
-			r_room 
-		INNER JOIN 
-		(
-			SELECT 
-				e_reserve.reserve_id,
-				r_reservavle_room_info.room_id,
-				r_reservavle_room_info.businessday
-			FROM public.r_reservavle_room_info
-			LEFT OUTER JOIN public.e_reserve  ON
-				r_reservavle_room_info.room_id = e_reserve.room_id
-			AND r_reservavle_room_info.businessday = e_reserve.checkin
-			WHERE 
-				reserve_id is  NULL
-				AND e_reserve.cancel = '0'
-			) reservable_info
-		ON reservable_info.room_id = r_room.room_id
+		r_room INNER JOIN ( 
+							SELECT e_reserve.reserve_id, r_reservavle_room_info.room_id, 
+							r_reservavle_room_info.businessday ,e_reserve.cancel
+							FROM public.r_reservavle_room_info 
+							LEFT OUTER JOIN public.e_reserve ON r_reservavle_room_info.room_id = e_reserve.room_id 
+							AND r_reservavle_room_info.businessday = e_reserve.checkin 
+							) 
+				reservable_info ON reservable_info.room_id = r_room.room_id
 		WHERE 
-				reservable_info.businessday >= #{firstCheckIn}
-			AND reservable_info.businessday <= #{finalCheckIn}
-			AND r_room.smoking = #{smoking}
-			AND r_room.indoor_bathroom = #{inDoorBathRoom}
+			reservable_info.businessday >= #{firstCheckIn} 
+			AND reservable_info.businessday <= #{finalCheckIn} 
+			AND r_room.smoking = #{smoking} 
+			AND r_room.indoor_bathroom = #{inDoorBathRoom} 
+			AND cancel is null
 		ORDER BY businessday, reservable_info.room_id
      ]]>
    </select>

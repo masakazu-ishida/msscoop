@@ -63,7 +63,7 @@ private final ReserveDAO reserveDAO;
 		Reserve reserveDTO = reserveDAO.findById(updateForm.getReserveId());
 		
 		
-		reserveDTO.setCancel("1");
+		reserveDTO.setCancel(true);
 		
 		return reserveDAO.update(reserveDTO);
 		
