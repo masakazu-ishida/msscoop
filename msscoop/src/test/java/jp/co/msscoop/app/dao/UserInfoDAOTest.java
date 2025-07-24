@@ -23,7 +23,7 @@ public class UserInfoDAOTest {
 	public UserInfoDAO dao;
 	
 	@Test
-	@Sql("/sqls/user_init.sql")
+	@Sql("/sqls/init_data.sql")
 	public void test1() {
 		UserInfo user = dao.findById("12345");
 		

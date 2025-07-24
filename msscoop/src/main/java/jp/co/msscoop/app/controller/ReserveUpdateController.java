@@ -3,6 +3,7 @@ package jp.co.msscoop.app.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.service.ReserveRegisterService;
 import jp.co.msscoop.app.service.ReserveUpdateService;
@@ -55,8 +57,8 @@ public class ReserveUpdateController {
 	}
 	
 	@PostMapping(params = "input")
-	public ModelAndView input(@RequestParam("reserveId") String reserveId) {
-		ReserveForm reserveForm = reserveUpdateService.input(reserveId);
+	public ModelAndView input(@RequestParam("reserveId") String reserveId, @ModelAttribute("updateForm") ReserveForm reserveForm) {
+		reserveForm = reserveUpdateService.input(reserveId,reserveForm);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/reserve/update/input");
 		mv.addObject("updateForm", reserveForm);
@@ -76,7 +78,9 @@ public class ReserveUpdateController {
 	@PostMapping(params = "commit")
 	public ModelAndView commmit(@ModelAttribute("updateForm")ReserveForm reserveForm ) {
 		ModelAndView mv = new ModelAndView();
-		int result = reserveUpdateService.commit(reserveForm);
+		boolean  result = reserveUpdateService.update(reserveForm);
+		
+		
 		mv.setViewName("redirect:/reserve/update?complete");
 		
 		return mv;
@@ -87,10 +91,27 @@ public class ReserveUpdateController {
 		ModelAndView mv = new ModelAndView();
 		reserveForm = reserveUpdateService.confirm(reserveForm);
 		mv.setViewName("/reserve/update/complete");
-		mv.addObject("updateForm", reserveForm);
+		//mv.addObject("updateForm", reserveForm);
 		status.setComplete();
 		return mv;
 	}
+	
+	//各リクエストハンドラメソッドは処理に失敗して前に戻る処理しか書かない。
+		//Controllerの全リクエストハンドラメソッドにおける機能（ユースケース）の最初からやり直しは、ここに集約
+		@ExceptionHandler(BusinessException.class)
+		public ModelAndView handleException(BusinessException e) {
+			
+			//例外ハンドラメソッドはModelを引数に取れないので、ModelViewを作ってView名と値をセットして返す
+			ModelAndView mod = new ModelAndView();
+			
+			//model.addAttributeと同じ
+			mod.addObject("errormsg", e.getMessage());
+			
+			//リクエストハンドラメソッドでView名を返すのと同じ
+			mod.setViewName("/reserve/update/input");
+			return mod;
+			
+		}
 
 
 }

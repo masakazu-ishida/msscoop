@@ -9,7 +9,7 @@ import jp.co.msscoop.app.form.ReserveForm;
  * 予約登録機能に対するサービスインターフェース
  */
 public interface ReserveRegisterService {
-	ReserveForm input(ReserveForm registerForm);
+	//ReserveForm input(ReserveForm registerForm);
 	ReserveForm confirm(ReserveForm registerForm);
 	String register(ReserveForm registerForm, UserInfo userInfo);
 }

@@ -23,6 +23,8 @@
             <li>
                 <a href="#">お問い合わせ</a>
             </li>
+			<li>
+			     <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/top}">管理者メニュー</a>
 			
 			<li>
 				<div th:if="${#authorization.expression('isAuthenticated()')}">
@@ -30,6 +32,7 @@
 				</div>	 
            </li>
         </ul>
-  </nav>	
-</header>
+		
+  </nav><br>
+ </header>
 <hr/>

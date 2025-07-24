@@ -33,10 +33,15 @@
 			reservable_info.businessday 
 		FROM 
 		r_room INNER JOIN ( 
-							SELECT e_reserve.reserve_id, r_reservavle_room_info.room_id, 
-							r_reservavle_room_info.businessday ,e_reserve.cancel
-							FROM public.r_reservavle_room_info 
-							LEFT OUTER JOIN public.e_reserve ON r_reservavle_room_info.room_id = e_reserve.room_id 
+							SELECT 
+								e_reserve.reserve_id, 
+								r_reservavle_room_info.room_id, 
+								r_reservavle_room_info.businessday ,
+								e_reserve.cancel
+							FROM 
+								public.r_reservavle_room_info 
+							LEFT OUTER JOIN public.e_reserve 
+								ON r_reservavle_room_info.room_id = e_reserve.room_id 
 							AND r_reservavle_room_info.businessday = e_reserve.checkin 
 							) 
 				reservable_info ON reservable_info.room_id = r_room.room_id
@@ -45,20 +50,14 @@
 			AND reservable_info.businessday <= #{finalCheckIn} 
 			AND r_room.smoking = #{smoking} 
 			AND r_room.indoor_bathroom = #{inDoorBathRoom} 
-			AND cancel is null
+			AND reservable_info.cancel is null or reservable_info.cancel = true 
 		ORDER BY businessday, reservable_info.room_id
      ]]>
    </select>
    
-   
-   
-   
-   
-   
-  
-   
-   
+
    <select id="findById" resultType="jp.co.msscoop.app.dto.ReservableRoomInfo">
+   		
    		SELECT r_reservavle_room_info.room_id, 
    			r_reservavle_room_info.businessday
 			FROM r_reservavle_room_info
@@ -68,6 +67,11 @@
 		WHERE 
 			r_reservavle_room_info.room_id = #{roomId} 
 			AND r_reservavle_room_info.businessday = #{businessDay} FOR UPDATE
+		
+			
+			
+		
+			
    </select>
    
    

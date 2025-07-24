@@ -65,6 +65,8 @@ public class LocalUserDetailServiceIml implements UserDetailsService {
 		UserDetailsImpl userDetails  = new UserDetailsImpl(userInfo);
 		
 		
+		//userInfo.setPassword("{bcrypt}" + userInfo.getPassword());
+		
 		return userDetails;
 	}
 

@@ -5,7 +5,12 @@
 		<body>
 		    <!-- (2)body内で共通化したい部品をfragment化する -->
 		    <header th:replace="~{/common/header}"></header>
+			<span class="text-danger"
+								             th:if="${errormsg != null}"
+								             th:text="${errormsg}">
+								               search error </span>
 			<main>
+				<h2>予約詳細画面</h2>
 				<div class="scroll">
 					<table border="0" class="reservelist">
 										<tr><td>日付</td><td th:text="${ #temporals.format(item.businessday, 'yyyy-MM-dd')} ">

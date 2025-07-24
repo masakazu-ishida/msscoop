@@ -29,7 +29,9 @@ public class ReservableSearchForm {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate checkout;
+	
 	private boolean inDoorBath;
+	
 	private boolean smoking;
 	
 }

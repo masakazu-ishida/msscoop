@@ -4,19 +4,21 @@
 	<body>
 	    <!-- (2)body内で共通化したい部品をfragment化する -->
 	    <header th:replace="~{/common/header}"></header>
+		<span class="text-danger"
+							             th:if="${errormsg != null}"
+							             th:text="${errormsg}">
+							               search error </span>
 		<main>
-			<h2>予約画面</h2>
+			<h2>予約登録入力画面</h2>
 			<form th:action="@{/reserve/register}" th:object="${registerForm}"  method="post">
 				<table>
 					
 					<tr><td>日付</td><td th:text="*{ #temporals.format(checkIn, 'yyyy-MM-dd')} "></tr>
 					<tr><td>部屋名</td><td th:text="*{roomName}"></td></tr>
-					<tr><td></td><td><img th:src="@{*{roomImage}}"/></td></tr>
+					<tr><td>お部屋イメージ</td><td><img th:src="@{*{roomImage}}"/></td></tr>
 					<tr><td>内風呂</td><td th:text="*{inDoorBathRoom == false } ? 'なし' : 'あり'"></td> </tr>
 					<tr><td>喫煙</td><td th:text="*{smoking == false} ? '禁煙': '喫煙OK'"></td> </tr>
 					<tr><td>1名1泊 </td><td th:text="${#numbers.formatInteger(registerForm.price, 3, 'COMMA') + '円'}"></td> </tr>
-					
-					
 					<tr><td>宿泊人数</td>
 						<td> 
 							<select th:field="*{stayNumberOfPeople}">

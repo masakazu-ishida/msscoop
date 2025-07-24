@@ -105,7 +105,7 @@ public class ReservableSearchController {
 	 * @return "/reservable/reservableSearch"を返す
 	 */
 	@GetMapping("")
-	public ModelAndView index() {
+	public ModelAndView index(@ModelAttribute("errormsg") String message) {
 		
 		//ReservableSearchFormの変数searchFormを宣言
 		//searchFormSession.getSearchFormを呼び出しし、戻り値をsearchFormに設定する。
@@ -127,6 +127,7 @@ public class ReservableSearchController {
 //		}
 		
 		ModelAndView mView = new ModelAndView();
+		//mView.addObject("message", message);
 		mView.setViewName("/reservable/reservableSearch");
 		
 		//model.addAttributeを呼び出し、キー名は『reservableSearchForm』、第二引数にsearchFormをセット
@@ -166,7 +167,7 @@ public class ReservableSearchController {
 	 * @return
 	 */
 	@PostMapping(params = "execute")
-	public ModelAndView search(@Valid ReservableSearchForm form, BindingResult result, Model model) {
+	public ModelAndView search(@Valid ReservableSearchForm form, BindingResult result) {
 		ModelAndView mView = new ModelAndView();
 		mView.setViewName("/reservable/reservableSearchResult");
 		try {

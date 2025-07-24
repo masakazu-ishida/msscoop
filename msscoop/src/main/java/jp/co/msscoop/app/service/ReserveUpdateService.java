@@ -8,8 +8,8 @@ import jp.co.msscoop.app.form.ReserveForm;
  */
 public interface ReserveUpdateService {
 
-	public ReserveForm input(String reserveId);
+	public ReserveForm input(String reserveId,ReserveForm reservForm);
 	public ReserveForm confirm(ReserveForm updateForm);
-	public int commit(ReserveForm updateForm);
+	public boolean update(ReserveForm updateForm);
 	
 }

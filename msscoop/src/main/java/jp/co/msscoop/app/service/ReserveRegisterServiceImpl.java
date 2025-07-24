@@ -92,8 +92,10 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 		if(reservedInfo != null) {
 			//trueの時の処理
 			//String型変数messageを宣言。
+			
+			String strPladeHolder = "お部屋名" + registerForm.getRoomName() + "チェックイン日"+ registerForm.getCheckIn();
 			//プロパティファイルmessages.propertiesからキー"bus.error.pastday"のメッセージを取得し、変数messageを初期化
-			String message = messageSource.getMessage("bus.error.already_reserved", null, Locale.JAPAN);
+			String message = messageSource.getMessage("bus.error.already_reserved", new String[]{strPladeHolder}, Locale.JAPAN);
 			//引数messageで初期値を与えてBusinessExceptionをインスタンス化し、throwする。（Controllerでキャッチして空室検索画面に戻る）
 			throw new BusinessException(message);
 		}
@@ -167,7 +169,7 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 	 * @param registerForm
 	 * @return 
 	 */
-	
+	/*
 	@Override
 	public ReserveForm input(ReserveForm registerForm) {
 		
@@ -185,7 +187,7 @@ public class ReserveRegisterServiceImpl implements ReserveRegisterService {
 		// 初期化済みのregisterFormを返す
 		return registerForm;
 	}
-	
+	*/
 	/**
 	 * [概要]<br>
 	 * 予約登録内容を確認する

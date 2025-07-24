@@ -31,7 +31,7 @@ public class ReserveDAOTest {
 	public void findByNewIdTest() {
 		String id = dao.findNewId(LocalDate.parse("2025-01-06"));
 		//少し賢い書き方
-		assertThat(id).isEqualTo("202501060004");
+		assertThat(id).isEqualTo("202501060001");
 		
 						
 	}

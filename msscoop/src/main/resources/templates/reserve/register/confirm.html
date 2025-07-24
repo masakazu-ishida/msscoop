@@ -4,8 +4,12 @@
 	<body>
 	    <!-- (2)body内で共通化したい部品をfragment化する -->
 	    <header th:replace="~{/common/header}"></header>
+		<span class="text-danger"
+							             th:if="${errormsg != null}"
+							             th:text="${errormsg}">
+							               search error </span>
 		<main>
-
+			<h2>予約登録確認画面</h2>
 			<form th:action="@{/reserve/register}" th:object="${registerForm}"  method="post">
 				<table>
 					<tr><td>日付</td><td th:text="${ #temporals.format(registerForm.checkIn, 'yyyy-MM-dd')} "></tr>
@@ -13,13 +17,11 @@
 					<tr><td>お部屋イメージ</td><td><img th:src="@{${registerForm.roomImage}}"/></td></tr>
 					<tr><td>内風呂</td><td th:text="${registerForm.inDoorBathRoom == false } ? 'なし' : 'あり'"></td> </tr>
 					<tr><td>喫煙</td><td th:text="${registerForm.smoking == false} ? '喫煙OK' : '禁煙'"></td> </tr>
+					<tr><td>1名1泊 </td><td th:text="${#numbers.formatInteger(registerForm.price, 3, 'COMMA') + '円'}"></td> </tr>
 					<tr><td>宿泊人数</td><td th:text="${registerForm.stayNumberOfPeople}"></td></tr>
 					<tr><td>食事</td><td th:text="${registerForm.meal} ? 'あり' : 'なし'"></td></tr>
-					<!-- <tr><td>宿泊料金</td><td th:text="${registerForm.amount}"></td></tr> -->
-					<tr><td>宿泊料金</td><td th:text="${#numbers.formatInteger(registerForm.amount, 3, 'COMMA')+ '円'}"></td></tr>
-					
-			
-					<tr><td><input type="submit" name="commit" value="予約"><input type="submit" name="input" value="戻る"> </td></tr>
+					<tr><td>宿泊料金合計</td><td th:text="${#numbers.formatInteger(registerForm.amount, 3, 'COMMA')+ '円'}"></td></tr>
+					<tr><td><input type="submit" name="commit" value="予約"></td></tr>
 				</table>
 			</form>			
 		</main>

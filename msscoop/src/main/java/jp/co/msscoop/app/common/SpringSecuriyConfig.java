@@ -1,5 +1,6 @@
 package jp.co.msscoop.app.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,8 +32,12 @@ public class SpringSecuriyConfig  {
 	 */
 	private final UserDetailsService userDetailsService;
 	
+	//@Autowired
+	//private PasswordEncoder passwordEncoder;
+	
 	public SpringSecuriyConfig(UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
+		
 	}
 	
 	

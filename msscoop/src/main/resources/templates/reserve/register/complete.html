@@ -4,8 +4,12 @@
 	<body>
 	    <!-- (2)body内で共通化したい部品をfragment化する -->
 	    <header th:replace="~{/common/header}"></header>
+		<span class="text-danger"
+							             th:if="${errormsg != null}"
+							             th:text="${errormsg}">
+							               search error </span>
 		<main>
-			<h2></h2>
+			<h2>予約登録完了画面</h2>
 				<table>
 					<tr><td>ご予約ありがとうございます</td></tr>
 					<tr><td　th:text="${'予約番号' + reserveId}"></td></tr>

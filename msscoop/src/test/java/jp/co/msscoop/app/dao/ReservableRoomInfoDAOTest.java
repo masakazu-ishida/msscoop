@@ -32,7 +32,7 @@ public class ReservableRoomInfoDAOTest {
 		boolean smoking = false;
 		boolean inDoorBathRoom = true;
 		List<ReservableRoomInfo> list = dao.search(firstCheckIn, finalCheckIn, inDoorBathRoom, smoking);
-		assertThat(list).isNotEmpty().hasSize(5);
+		assertThat(list).isNotEmpty().hasSize(3);
 		
 		
 		

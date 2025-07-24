@@ -39,10 +39,16 @@
 	このメソッドは必ずトランザクションで排他ロックを掛けてから呼び出すこと！　-->
 	<select id="findNewId" resultType="string">
 		
-		SELECT  replace(cast(current_date as character(10)), '-','')
+		SELECT  replace(cast(#{checkIn} as character(10)), '-','')
 			       || replace( to_char((select nextval('SEQ_RESERVE_ID') as seq), '0000'), ' ','')  
 			       as reserve_id FOR UPDATE
-
+		
+		
+		<!--		
+			select cast(current_date as character(10))
+		select cast(#{checkIn} as character(10)
+		select replace(cast(#{checkIn} as character(10)), '-','')		
+	-->
 
 	</select>
 	
@@ -78,7 +84,9 @@
 
         inner join r_user usr 
 		ON rsv.user_id = usr.user_id
-		where rsv.user_id = #{userId} and  rsv.checkin >= #{tomorrow} order by rsv.checkin	
+		where rsv.user_id = #{userId} 
+			AND rsv.cancel = false
+			AND  rsv.checkin >= #{tomorrow} order by rsv.checkin	
 			
 			
 			

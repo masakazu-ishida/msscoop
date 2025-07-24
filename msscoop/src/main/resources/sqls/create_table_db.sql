@@ -1,32 +1,4 @@
---
--- PostgreSQL database dump
---
 
--- Dumped from database version 17.4
--- Dumped by pg_dump version 17.4
-
--- Started on 2025-03-13 18:20:07
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
---
--- TOC entry 217 (class 1259 OID 16388)
--- Name: e_reserve; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.e_reserve (
     reserve_id character(12) DEFAULT '000000000001'::bpchar NOT NULL,
@@ -43,53 +15,6 @@ CREATE TABLE public.e_reserve (
 
 ALTER TABLE public.e_reserve OWNER TO postgres;
 
---
--- TOC entry 218 (class 1259 OID 16394)
--- Name: e_reserve_detail; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.e_reserve_detail (
-    stay_date date NOT NULL,
-    reserve_id character(12) DEFAULT '000000000001'::bpchar NOT NULL,
-    payment integer
-);
-
-
-ALTER TABLE public.e_reserve_detail OWNER TO postgres;
-
---
--- TOC entry 219 (class 1259 OID 16398)
--- Name: r_customer; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.r_customer (
-    customer_id character(12) DEFAULT '000000000001'::bpchar NOT NULL,
-    customer_name character varying(10),
-    mail character varying(256),
-    telnumber character varying(50),
-    address character varying(255)
-);
-
-
-ALTER TABLE public.r_customer OWNER TO postgres;
-
---
--- TOC entry 220 (class 1259 OID 16404)
--- Name: r_meal_type; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.r_meal_type (
-    meal_type_id character(12) DEFAULT '000000000001'::bpchar NOT NULL,
-    meal_type_name character varying(30)
-);
-
-
-ALTER TABLE public.r_meal_type OWNER TO postgres;
-
---
--- TOC entry 221 (class 1259 OID 16408)
--- Name: r_reservavle_room_info; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.r_reservavle_room_info (
     room_id character(12) DEFAULT '000000000001'::bpchar NOT NULL,
@@ -99,10 +24,6 @@ CREATE TABLE public.r_reservavle_room_info (
 
 ALTER TABLE public.r_reservavle_room_info OWNER TO postgres;
 
---
--- TOC entry 222 (class 1259 OID 16412)
--- Name: r_room; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.r_room (
     room_id character(12) DEFAULT '000000000001'::bpchar NOT NULL,
@@ -116,10 +37,6 @@ CREATE TABLE public.r_room (
 
 ALTER TABLE public.r_room OWNER TO postgres;
 
---
--- TOC entry 223 (class 1259 OID 16416)
--- Name: r_user; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.r_user (
     user_id character varying(20) NOT NULL,

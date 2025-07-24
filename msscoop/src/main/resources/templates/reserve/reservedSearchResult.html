@@ -6,6 +6,7 @@
 		    <!-- (2)body内で共通化したい部品をfragment化する -->
 		    <header th:replace="~{/common/header}"></header>
 			<main>
+				<h2>予約一覧画面</h2>
 				<div class="scroll">
 					<table border="0" class="reservelist">
 						<tr th:each="item : ${reservedList}">
@@ -16,7 +17,7 @@
 										<tr><td>部屋名 </td><td th:text="${item.room.roomName}"></td></tr>
 										<tr><td></td><td><img class="roomimage"   th:src="@{${item.room.roomImage}}"/></td></tr>
 										<tr><td>宿泊人数 </td><td th:text="${item.stayNumberOfPeople + '人'}"></td> </tr>
-										<tr><td>合計金額 </td><td th:text="${#numbers.formatInteger(item.amount, 3, 'COMMA') + '円'}"></td> </tr>
+										<tr><td>宿泊料金合計</td><td th:text="${#numbers.formatInteger(item.amount, 3, 'COMMA') + '円'}"></td> </tr>
 										<tr><td>内風呂 </td><td th:text="${item.room.inDoorBathRoom == false} ? 'なし' : 'あり'"></td> </tr>
 										<tr><td>喫煙 </td><td th:text="${item.room.smoking == false} ? '禁煙' : '喫煙OK'"></td> </tr>
 										

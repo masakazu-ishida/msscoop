@@ -11,12 +11,9 @@
 					             th:if="${errormsg != null}"
 					             th:text="${errormsg}">
 					               search error </span>
-		
-		
-		
-		
 								   
 		<main>
+			<h2>空室検索画面</h2>
 			<form th:object="${reservableSearchForm}" th:action="@{/reservable/search}" method="post">
 				
 						

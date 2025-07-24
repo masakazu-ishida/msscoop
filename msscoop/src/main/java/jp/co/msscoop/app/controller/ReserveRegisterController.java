@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.msscoop.app.dto.UserDetailsImpl;
 import jp.co.msscoop.app.dto.UserInfo;
+import jp.co.msscoop.app.exception.BusinessException;
 import jp.co.msscoop.app.exception.UseCaseException;
 import jp.co.msscoop.app.form.ReserveForm;
 import jp.co.msscoop.app.service.ReserveRegisterService;
@@ -66,7 +67,18 @@ public class ReserveRegisterController {
 	 */
 	@ModelAttribute("registerForm")
 	public ReserveForm setupForm() {
-		return new ReserveForm();
+		ReserveForm registerForm = new ReserveForm();
+		//　registerForm.setInDoorBathRoomを呼び出す。初期値は『内風呂あり』とする
+		registerForm.setInDoorBathRoom(true);
+		
+		//　registerForm.setMealを呼び出す。初期値は『食事あり』とする
+		registerForm.setMeal(true);
+		
+		//　registerForm.setStayNumberOfPeopleを呼び出す。初期値として2を指定（宿泊人数２名をデフォルト）
+		registerForm.setStayNumberOfPeople(2);
+		
+		// 初期化済みのregisterFormを返す
+		return registerForm;
 	}
 
 	/**
@@ -89,7 +101,7 @@ public class ReserveRegisterController {
 		
 		//1. ReserveRegisterService.inputを呼び出す。引数にはReserveFormを指定する。
 		//　
-		reserveService.input(registerForm);
+		//reserveService.input(registerForm);
 		
 		//2.　"/reserve/register/input"を戻り値で返し、予約入力画面を表示する。
 		
@@ -125,6 +137,7 @@ public class ReserveRegisterController {
 			@AuthenticationPrincipal UserDetailsImpl info,
 			RedirectAttributes redirectAttr) {
 		
+		ModelAndView mvw = new ModelAndView();
 		
 		//reserveService.registerを呼び出し、予約を実行する。戻り値に予約IDを返す。
 		String id  = reserveService.register(registerForm,info.getUserInfo());
@@ -133,9 +146,12 @@ public class ReserveRegisterController {
 		redirectAttr.addFlashAttribute("reserveId", id);
 		
 		//完了画面に遷移するcompleteメソッドにリダイレクトする。直接完了画面に遷移しないこと
-		ModelAndView mvw = new ModelAndView();
+		
 		mvw.setViewName("redirect:/reserve/register?complete");
-		return mvw;	
+		
+	
+			
+		return mvw;
 	}
 	
 	/**
@@ -150,19 +166,19 @@ public class ReserveRegisterController {
 	 * @return 完了画面"/reserve/register/complete"を返す
 	 */
 	@GetMapping(params = "complete")
-	public ModelAndView complete(Model model, @ModelAttribute("reserveId") String reserveId, SessionStatus status) {
+	public ModelAndView complete(@ModelAttribute("reserveId") String reserveId, SessionStatus status) {
 		
-		
+		ModelAndView mvw = new ModelAndView();
 		
 		
 		//model.addAttributeで出力先画面に予約IDを渡す
-		model.addAttribute("reserveId",reserveId);
+		mvw.addObject("reserveId",reserveId);
 		
 		//status.setCompleteを呼び出し、セッションから予約Formを取り除く
 		status.setComplete();
 		
 		//完了画面に遷移する
-		ModelAndView mvw = new ModelAndView();
+		
 		mvw.setViewName("/reserve/register/complete");
 		return mvw;
 		
@@ -170,18 +186,18 @@ public class ReserveRegisterController {
 	
 	//各リクエストハンドラメソッドは処理に失敗して前に戻る処理しか書かない。
 	//Controllerの全リクエストハンドラメソッドにおける機能（ユースケース）の最初からやり直しは、ここに集約
-	@ExceptionHandler(UseCaseException.class)
-	public ModelAndView handleUseCaseException(UseCaseException e) {
+	@ExceptionHandler(BusinessException.class)
+	public ModelAndView handleException(BusinessException e, RedirectAttributes attr) {
 		
 		//例外ハンドラメソッドはModelを引数に取れないので、ModelViewを作ってView名と値をセットして返す
-		ModelAndView mod = new ModelAndView();
+		ModelAndView mvw = new ModelAndView();
 		
-		//model.addAttributeと同じ
-		mod.addObject("errormsg", e.getMessage());
+		attr.addAttribute("errormsg", e.getMessage());
 		
-		//リクエストハンドラメソッドでView名を返すのと同じ
-		mod.setViewName("/reserve/input");
-		return mod;
+		
+		mvw.setViewName("redirect:/reservable/search");
+		
+		return mvw;
 		
 	}
 
